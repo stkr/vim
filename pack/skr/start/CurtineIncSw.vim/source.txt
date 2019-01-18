@@ -1,1 +1,0 @@
-https://github.com/ericcurtin/CurtineIncSw.vim.git

@@ -6,6 +6,10 @@ else
 	let g:vim_home = $HOME."/.vim/"
 endif
 
+set enc=utf-8
+set fileencoding=utf-8
+set fileencodings=ucs-bom,utf8,prc
+
 syntax on
 
 set number
