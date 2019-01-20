@@ -1,5 +1,8 @@
 language messages en_US.UTF-8
 
+" Use <,> as the leader key.
+let mapleader=","
+
 if has('win32') || has ('win64')
 	let g:vim_home = $HOME."/vimfiles/"
 else
