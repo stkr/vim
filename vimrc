@@ -12,15 +12,30 @@ set fileencodings=ucs-bom,utf8,prc
 
 syntax on
 
+set relativenumber
 set number
+
 set incsearch
 set hlsearch
 set showcmd
+
+" Highlight the active line and the active column.
+set cursorline
+"set cursorcolumn
+
+" Set the text width to and create a vertical bar.
+set textwidth=100
+set colorcolumn=101
+
+" Set scroll offset so the active line stays towards the center.
+set scrolloff=8
 
 set laststatus=2
 
 set wildmenu
 set wildmode=longest:full,full
+
+set ruler
 
 let g:session_dir = g:vim_home."sessions"
 exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/'
@@ -78,4 +93,16 @@ autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checkti
 autocmd FileChangedShellPost *
   \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
+" make backspace work like most other programs
+set backspace=indent,eol,start
+
+" http://vim.wikia.com/wiki/Use_ijkl_to_move_the_cursor_and_h_to_insert
+map i <Up>
+map j <Left>
+map k <Down>
+noremap h i
+
+" Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
+inoremap jk <Esc>
+inoremap kj <Esc>
 
