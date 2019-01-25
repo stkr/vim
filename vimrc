@@ -67,15 +67,15 @@ if has("gui_running")
     set guioptions-=t 
     set guioptions-=T
 	if has("gui_gtk2") || has("gui_gtk3")
-        set guifont=Courier\ New\ 9
+        set guifont=Courier\ New\ 11 
     elseif has("gui_photon")
-        set guifont=Courier\ New:s9
+        set guifont=Courier\ New:s11
     elseif has("gui_kde")
-        set guifont=Courier\ New/9/-1/5/50/0/0/0/1/0
+        set guifont=Courier\ New/11/-1/5/50/0/0/0/1/0
     elseif has("x11")
         set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
     else
-        set guifont=Courier_New:h9:b:cDEFAULT
+        set guifont=Courier_New:h11:b:cDEFAULT
   endif
 endif
 
