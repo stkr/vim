@@ -45,14 +45,15 @@ exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/'
 exec 'nnoremap <Leader>sr :so ' . g:session_dir . '/'
 
 if has('gui_running')
-	set background=light
+    set background=light
+    colorscheme PaperColor
 else
 	set background=dark
+    colorscheme gruvbox
 endif 
-let g:solarized_contrast="high"
-let g:solarized_termcolors=256
-colorscheme solarized
-
+" let g:solarized_contrast="high"
+" let g:solarized_termcolors=256
+" colorscheme solarized
 
 set expandtab
 set shiftwidth=4
@@ -67,15 +68,15 @@ if has("gui_running")
     set guioptions-=t 
     set guioptions-=T
 	if has("gui_gtk2") || has("gui_gtk3")
-        set guifont=Courier\ New\ 11 
+        set guifont=Consolas 11 
     elseif has("gui_photon")
-        set guifont=Courier\ New:s11
+        set guifont=Consolas:s11
     elseif has("gui_kde")
-        set guifont=Courier\ New/11/-1/5/50/0/0/0/1/0
+        set guifont=Consolas/11/-1/5/50/0/0/0/1/0
     elseif has("x11")
         set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
     else
-        set guifont=Courier_New:h11:b:cDEFAULT
+        set guifont=Consolas:h11:cDEFAULT
   endif
 endif
 
@@ -100,12 +101,27 @@ autocmd FileChangedShellPost *
 set backspace=indent,eol,start
 
 " http://vim.wikia.com/wiki/Use_ijkl_to_move_the_cursor_and_h_to_insert
-map i <Up>
-map j <Left>
-map k <Down>
-noremap h i
+" map i <Up>
+" map j <Left>
+" map k <Down>
+" noremap h i
 
 " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
 inoremap jk <Esc>
 inoremap kj <Esc>
+
+" When invoked, unless a starting directory is specified, CtrlP will set its local working 
+" directory according to this variable:
+" 'c' - the directory of the current file.
+" 'r' - the nearest ancestor that contains one of these directories or files: .git .hg .svn .bzr _darcs
+" 'a' - like c, but only if the current working directory outside of CtrlP is not a direct ancestor of the directory of the current file.
+let g:ctrlp_working_path_mode = 'ra'
+
+let g:ctrlp_user_command = {
+	\ 'types': {
+		\ 1: ['.git', 'cd %s && git ls-files'],
+		\ 2: ['.hg', 'hg --cwd %s locate -I .'],
+		\ },
+	\ 'fallback': 'find %s -type f'
+	\ }
 
