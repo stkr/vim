@@ -46,14 +46,12 @@ exec 'nnoremap <Leader>sr :so ' . g:session_dir . '/'
 
 if has('gui_running')
     set background=light
-    colorscheme PaperColor
 else
 	set background=dark
-    colorscheme gruvbox
 endif 
-" let g:solarized_contrast="high"
-" let g:solarized_termcolors=256
-" colorscheme solarized
+let g:solarized_contrast="high"
+let g:solarized_termcolors=256
+colorscheme solarized
 
 set expandtab
 set shiftwidth=4
