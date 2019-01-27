@@ -50,7 +50,7 @@ else
 	set background=dark
 endif 
 let g:solarized_contrast="high"
-let g:solarized_termcolors=256
+" let g:solarized_termcolors=256
 colorscheme solarized
 
 set expandtab
