@@ -44,11 +44,7 @@ let g:session_dir = g:vim_home."sessions"
 exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/'
 exec 'nnoremap <Leader>sr :so ' . g:session_dir . '/'
 
-if has('gui_running')
-    set background=light
-else
-	set background=dark
-endif 
+set background=light
 let g:solarized_contrast="high"
 " let g:solarized_termcolors=256
 colorscheme solarized
