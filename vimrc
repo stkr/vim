@@ -53,6 +53,7 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
+set ignorecase " use case insensitive search per default
 
 if has("gui_running")
 	" GUI is running or is about to start.
