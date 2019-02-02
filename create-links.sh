@@ -2,7 +2,7 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-DOTFILES=".vim .minttyrc .tmux.conf"
+DOTFILES=".vim .minttyrc .tmux.conf .bashrc"
 
 for F in $DOTFILES; do
     if [[ -e "$HOME/$F" ]]; then
