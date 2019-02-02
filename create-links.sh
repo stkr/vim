@@ -2,4 +2,13 @@
 
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
-ln -s "$DIR/.vim" "$HOME/.vim"
+DOTFILES=".vim .minttyrc"
+
+for F in $DOTFILES; do
+    if [[ -e "$HOME/$F" ]]; then
+        echo "$HOME/$F exists, skipping." 
+    else
+        ln -s "$DIR/$F" "$HOME/$F"
+        echo "Created link for $HOME/$F."
+    fi
+done
