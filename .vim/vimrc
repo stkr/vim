@@ -53,6 +53,10 @@ set expandtab
 set shiftwidth=4
 set softtabstop=4
 set tabstop=4
+
+set autoindent
+set smartindent
+
 set ignorecase " use case insensitive search per default
 
 if has("gui_running")
@@ -120,3 +124,6 @@ let g:ctrlp_user_command = {
 	\ 'fallback': 'find %s -type f'
 	\ }
 
+
+nnoremap <Leader>q :Bdelete<CR>
+cnoreabbrev wq w<BAR>Bdelete
