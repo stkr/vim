@@ -13,6 +13,9 @@ set enc=utf-8
 set fileencoding=utf-8
 set fileencodings=ucs-bom,utf8,prc
 
+set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+
 syntax on
 
 set relativenumber
@@ -39,10 +42,6 @@ set wildmenu
 set wildmode=longest:full,full
 
 set ruler
-
-let g:session_dir = g:vim_home."sessions"
-exec 'nnoremap <Leader>ss :mks! ' . g:session_dir . '/'
-exec 'nnoremap <Leader>sr :so ' . g:session_dir . '/'
 
 set background=light
 let g:solarized_contrast="high"
@@ -99,6 +98,9 @@ autocmd FileChangedShellPost *
 " make backspace work like most other programs
 set backspace=indent,eol,start
 
+" use the system clipboard for yanking and pasting
+set clipboard=unnamed
+
 " http://vim.wikia.com/wiki/Use_ijkl_to_move_the_cursor_and_h_to_insert
 " map i <Up>
 " map j <Left>
@@ -126,4 +128,7 @@ let g:ctrlp_user_command = {
 
 
 nnoremap <Leader>q :Bdelete<CR>
+
 cnoreabbrev wq w<BAR>Bdelete
+cnoreabbrev q Bdelete
+cnoreabbrev qq exit
