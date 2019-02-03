@@ -406,12 +406,21 @@ endif
 " 'a' - like c, but only if the current working directory outside of CtrlP is not a direct ancestor of the directory of the current file.
 let g:ctrlp_working_path_mode = 'ra'
 
-let g:ctrlp_user_command = {
-	\ 'types': {
-		\ 1: ['.git', 'cd %s && git ls-files'],
-		\ 2: ['.hg', 'hg --cwd %s locate -I .'],
-		\ },
-	\ 'fallback': 'find %s -type f'
-	\ }
-
+if has('win32') || has ('win64')
+    let g:ctrlp_user_command = {
+                \ 'types': {
+                \ 1: ['.git', 'cd %s && git ls-files'],
+                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                \ },
+                \ 'fallback': 'dir %s /-n /b /s /a-d'
+                \ }
+else
+    let g:ctrlp_user_command = {
+                \ 'types': {
+                \ 1: ['.git', 'cd %s && git ls-files'],
+                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
+                \ },
+                \ 'fallback': 'find %s -type f'
+                \ }
+endif
 
