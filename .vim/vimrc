@@ -9,58 +9,374 @@ else
 	let g:vim_home = $HOME."/.vim/"
 endif
 
-set enc=utf-8
-set fileencoding=utf-8
-set fileencodings=ucs-bom,utf8,prc
+" General {{{
+    " Abbreviations
+    abbr funciton function
+    abbr teh the
+    abbr tempalte template
+    abbr fitler filter
+    abbr cosnt const
+    abbr attribtue attribute
+    abbr attribuet attribute
 
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+    set autoread " detect when a file is changed
+    " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/149214
+    " Triger `autoread` when files changes on disk
+    " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+    " https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+    " Notification after file change
+    " https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+    autocmd FileChangedShellPost *
+    \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
 
-syntax on
+    set history=1000 " change history to 1000
+    set textwidth=120
 
-set relativenumber
-set number
+    set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+    set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
-set incsearch
-set hlsearch
-set showcmd
+    if (has('nvim'))
+        " show results of substition as they're happening
+        " but don't open a split
+        set inccommand=nosplit
+    endif
 
-" Highlight the active line and the active column.
-set cursorline
-"set cursorcolumn
+    set backspace=indent,eol,start " make backspace behave in a sane manner
+    set clipboard=unnamed
 
-" Set the text width to and create a vertical bar.
-set textwidth=100
-set colorcolumn=101
+    if has('mouse')
+        set mouse=a
+    endif
 
-" Set scroll offset so the active line stays towards the center.
-set scrolloff=8
+    " Searching
+    set ignorecase " case insensitive searching
+    set smartcase " case-sensitive if expresson contains a capital letter
+    set hlsearch " highlight search results
+    set incsearch " set incremental search, like modern browsers
+    set nolazyredraw " don't redraw while executing macros
 
-set laststatus=2
+    set magic " Set magic on, for regex
 
-set wildmenu
-set wildmode=longest:full,full
+    " error bells
+    set noerrorbells
+    set visualbell
+    set t_vb=
+    set tm=500
 
-set ruler
+    set enc=utf-8
+    set fileencoding=utf-8
 
-set background=light
-let g:solarized_contrast="high"
-" let g:solarized_termcolors=256
-colorscheme solarized
+    " Set the text width to and create a vertical bar.
+    set textwidth=100
+    set colorcolumn=101
+    set fileencodings=ucs-bom,utf8,prc
+" }}}
 
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-set tabstop=4
 
-set autoindent
-set smartindent
+" Appearance {{{
+    set number " show line numbers
+    set relativenumber
+    set wrap " turn on line wrapping
+    set wrapmargin=8 " wrap lines when coming within n characters from side
+    set linebreak " set soft wrapping
+    set showbreak=… " show ellipsis at breaking
+    set autoindent " automatically set indent of new line
+    set ttyfast " faster redrawing
+    set diffopt+=vertical
+    set laststatus=2 " show the satus line all the time
+    set scrolloff=8 " Set scroll offset so the active line stays towards the center.
+    set wildmenu " enhanced command line completion
+    set hidden " current buffer can be put into background
+    set showcmd " show incomplete commands
+    set noshowmode " don't show which mode disabled for PowerLine
+    set wildmode=list:longest " complete files like a shell
+    set shell=$SHELL
+    set cmdheight=1 " command bar height
+    set title " set terminal title
+    set showmatch " show matching braces
+    set mat=2 " how many tenths of a second to blink
+    set laststatus=2 " Always show the status line
 
-set ignorecase " use case insensitive search per default
+    " Tab control
+    set expandtab " insert tabs rather than spaces for <Tab>
+    set smarttab " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
+    set tabstop=4 " the visible width of tabs
+    set softtabstop=4 " edit as if the tabs are 4 characters wide
+    set shiftwidth=4 " number of spaces to use for indent and unindent
+    set shiftround " round indent to a multiple of 'shiftwidth'
 
-if has('mouse')
-    set mouse=a
-endif
+    " code folding settings
+    set foldmethod=syntax " fold based on indent
+    set foldlevelstart=99
+    set foldnestmax=10 " deepest fold is 10 levels
+    set nofoldenable " don't fold by default
+    set foldlevel=1
+
+    " toggle invisible characters
+    set list
+    set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+    set showbreak=↪
+
+    set ruler " Display a vertical ruler
+    set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
+    " switch cursor to line when in insert mode, and block when not
+    set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+    \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+    \,sm:block-blinkwait175-blinkoff150-blinkon175
+
+    if &term =~ '256color'
+        " disable background color erase
+        set t_ut=
+    endif
+
+    " enable 24 bit color support if supported
+    if (has("termguicolors"))
+        if (!(has("nvim")))
+            let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+            let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+        endif
+        set termguicolors
+    endif
+
+    " highlight conflicts
+    match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+    " LightLine {{{
+        let g:lightline = {
+        \   'colorscheme': 'solarized',
+        \   'active': {
+        \       'left': [ [ 'mode', 'paste' ],
+        \               [ 'gitbranch' ],
+        \               [ 'readonly', 'filetype', 'filename' ]],
+        \       'right': [ [ 'percent' ], [ 'lineinfo' ],
+        \               [ 'fileformat', 'fileencoding' ]]
+        \   },
+        \   'component_type': {
+        \       'readonly': 'error',
+        \       'linter_warnings': 'warning',
+        \       'linter_errors': 'error'
+        \   },
+        \   'component_function': {
+        \       'fileencoding': 'LightlineFileEncoding',
+        \       'filename': 'LightlineFileName',
+        \       'fileformat': 'LightlineFileFormat',
+        \       'gitbranch': 'LightlineGitBranch'
+        \   },
+        \   'tabline': {
+        \       'left': [ [ 'tabs' ] ],
+        \       'right': [ [ 'close' ] ]
+        \   },
+        \   'tab': {
+        \       'active': [ 'filename', 'modified' ],
+        \       'inactive': [ 'filename', 'modified' ],
+        \   },
+        \   'separator': { 'left': '', 'right': '' },
+        \   'subseparator': { 'left': '', 'right': '' }
+        \ }
+        " \   'separator': { 'left': '▓▒░', 'right': '░▒▓' },
+        " \   'subseparator': { 'left': '▒', 'right': '░' }
+
+        function! LightlineFileName() abort
+            let filename = winwidth(0) > 70 ? expand('%') : expand('%:t')
+            if filename =~ 'NERD_tree'
+                return ''
+            endif
+            let modified = &modified ? ' +' : ''
+            return fnamemodify(filename, ":~:.") . modified
+        endfunction
+
+        function! LightlineFileEncoding()
+            return winwidth(0) > 70 ? &fileencoding : ''
+        endfunction
+
+        function! LightlineFileFormat()
+            return winwidth(0) > 70 ? &fileformat : ''
+        endfunction
+
+        function! LightlineGitBranch()
+            return (exists('*fugitive#head') ? fugitive#head() : '')
+        endfunction
+
+    " }}}
+" }}}
+
+
+" General Mappings {{{
+    " set a map leader for more key combos
+    let mapleader = ','
+
+    " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
+    inoremap jk <Esc>
+    inoremap kj <Esc>
+
+    " shortcut to save
+    nmap <leader>, :w<cr>
+
+    " set paste toggle
+    set pastetoggle=<leader>v
+
+    " edit ~/.config/nvim/init.vim
+    map <leader>ev :e! ~/.config/nvim/init.vim<cr>
+    " edit gitconfig
+    map <leader>eg :e! ~/.gitconfig<cr>
+
+    " clear highlighted search
+    noremap <space> :set hlsearch! hlsearch?<cr>
+
+    " activate spell-checking alternatives
+    nmap ;s :set invspell spelllang=en<cr>
+
+    " remove extra whitespace
+    nmap <leader><space> :%s/\s\+$<cr>
+    nmap <leader><space><space> :%s/\n\{2,}/\r\r/g<cr>
+
+    inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
+    inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
+
+    nmap <leader>l :set list!<cr>
+
+    " Textmate style indentation
+    vmap <leader>[ <gv
+    vmap <leader>] >gv
+    nmap <leader>[ <<
+    nmap <leader>] >>
+
+    " switch between current and last buffer
+    nmap <leader>. <c-^>
+
+    " enable . command in visual mode
+    vnoremap . :normal .<cr>
+
+    map <silent> <C-h> :call functions#WinMove('h')<cr>
+    map <silent> <C-j> :call functions#WinMove('j')<cr>
+    map <silent> <C-k> :call functions#WinMove('k')<cr>
+    map <silent> <C-l> :call functions#WinMove('l')<cr>
+
+    nnoremap <silent> <leader>z :call functions#zoom()<cr>
+
+    map <leader>wc :wincmd q<cr>
+
+    inoremap <tab> <c-r>=functions#Smart_TabComplete()<CR>
+
+    vnoremap $( <esc>`>a)<esc>`<i(<esc>
+    vnoremap $[ <esc>`>a]<esc>`<i[<esc>
+    vnoremap ${ <esc>`>a}<esc>`<i{<esc>
+    vnoremap $" <esc>`>a"<esc>`<i"<esc>
+    vnoremap $' <esc>`>a'<esc>`<i'<esc>
+    vnoremap $\ <esc>`>o*/<esc>`<O/*<esc>
+    vnoremap $< <esc>`>a><esc>`<i<<esc>
+
+    " toggle cursor line
+    nnoremap <leader>i :set cursorline!<cr>
+
+    " scroll the viewport faster
+    nnoremap <C-e> 3<C-e>
+    nnoremap <C-y> 3<C-y>
+
+    " moving up and down work as you would expect
+    nnoremap <silent> j gj
+    nnoremap <silent> k gk
+    nnoremap <silent> ^ g^
+    nnoremap <silent> $ g$
+
+    " helpers for dealing with other people's code
+    nmap \t :set ts=4 sts=4 sw=4 noet<cr>
+    nmap \s :set ts=4 sts=4 sw=4 et<cr>
+
+" }}}
+
+" AutoGroups {{{
+    " file type specific settings
+    augroup configgroup
+        autocmd!
+
+        " automatically resize panes on resize
+        autocmd VimResized * exe 'normal! \<c-w>='
+        autocmd BufWritePost .vimrc,.vimrc.local,init.vim source %
+        autocmd BufWritePost .vimrc.local source %
+        " save all files on focus lost, ignoring warnings about untitled buffers
+        autocmd FocusLost * silent! wa
+
+        " make quickfix windows take all the lower section of the screen
+        " when there are multiple windows open
+        autocmd FileType qf wincmd J
+        autocmd FileType qf nmap <buffer> q :q<cr>
+    augroup END
+" }}}
+
+" General Functionality {{{
+
+    " Startify: Fancy startup screen for vim {{{
+
+        " Don't change to directory when selecting a file
+        let g:startify_files_number = 5
+        let g:startify_change_to_dir = 0
+        let g:startify_custom_header = [ ]
+        let g:startify_relative_path = 1
+        let g:startify_use_env = 1
+
+        function! s:list_commits()
+            let git = 'git -C ' . getcwd()
+            let commits = systemlist(git . ' log --oneline | head -n5')
+            let git = 'G' . git[1:]
+            return map(commits, '{"line": matchstr(v:val, "\\s\\zs.*"), "cmd": "'. git .' show ". matchstr(v:val, "^\\x\\+") }')
+        endfunction
+
+        " Custom startup list, only show MRU from current directory/project
+        let g:startify_lists = [
+        \  { 'type': 'dir',       'header': [ 'Files '. getcwd() ] },
+        \  { 'type': function('s:list_commits'), 'header': [ 'Recent Commits' ] },
+        \  { 'type': 'sessions',  'header': [ 'Sessions' ]       },
+        \  { 'type': 'bookmarks', 'header': [ 'Bookmarks' ]      },
+        \  { 'type': 'commands',  'header': [ 'Commands' ]       },
+        \ ]
+
+"        let g:startify_commands = [
+"        \   { 'up': [ 'Update Plugins', ':PlugUpdate' ] },
+"        \   { 'ug': [ 'Upgrade Plugin Manager', ':PlugUpgrade' ] },
+"        \ ]
+"
+"        let g:startify_bookmarks = [
+"            \ { 'c': '~/code/dotfiles/config/nvim/init.vim' },
+"            \ { 'z': '~/code/dotfiles/zsh/zshrc.symlink' }
+"        \ ]
+
+        autocmd User Startified setlocal cursorline
+    " }}}
+
+    " Close buffers but keep splits
+    nmap <leader>q :Bdelete<cr>
+" }}}
+
+" Colorscheme and final setup {{{
+    set background=light
+
+    if filereadable(expand("~/.vimrc_background"))
+        let base16colorspace=256
+        source ~/.vimrc_background
+    else
+        let g:solarized_contrast="high"
+        colorscheme solarized
+    endif
+    syntax on
+    filetype plugin indent on
+    " make the highlighting of tabs and other non-text less annoying
+    highlight SpecialKey ctermfg=19 guifg=#333333
+    highlight NonText ctermfg=19 guifg=#333333
+
+    " Highlight the active line and the active column.
+    set cursorline
+
+    " make comments and HTML attributes italic
+    highlight Comment cterm=italic term=italic gui=italic
+    highlight htmlArg cterm=italic term=italic gui=italic
+    highlight xmlAttrib cterm=italic term=italic gui=italic
+    " highlight Type cterm=italic term=italic gui=italic
+    highlight Normal ctermbg=none
+
+" }}}
+
 
 
 if has("gui_running")
@@ -68,10 +384,10 @@ if has("gui_running")
 	" Maximize gvim window (for an alternative on Windows, see simalt below).
 	set lines=50 columns=170
     set guioptions-=e
-    set guioptions-=t 
+    set guioptions-=t
     set guioptions-=T
 	if has("gui_gtk2") || has("gui_gtk3")
-        set guifont=Consolas 11 
+        set guifont=Consolas 11
     elseif has("gui_photon")
         set guifont=Consolas:s11
     elseif has("gui_kde")
@@ -83,35 +399,7 @@ if has("gui_running")
   endif
 endif
 
-let g:startify_session_autoload = 1
-let g:startify_session_persistence = 1
-let g:startify_change_to_dir = 1
-let g:startify_change_to_vcs_root = 1
-
-
-set autoread
-" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/149214
-" Triger `autoread` when files changes on disk
-" https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
-" https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
-autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
-" Notification after file change
-" https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
-autocmd FileChangedShellPost *
-  \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
-
-" make backspace work like most other programs
-set backspace=indent,eol,start
-
-" use the system clipboard for yanking and pasting
-set clipboard=unnamed
-
-
-" Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
-inoremap jk <Esc>
-inoremap kj <Esc>
-
-" When invoked, unless a starting directory is specified, CtrlP will set its local working 
+" When invoked, unless a starting directory is specified, CtrlP will set its local working
 " directory according to this variable:
 " 'c' - the directory of the current file.
 " 'r' - the nearest ancestor that contains one of these directories or files: .git .hg .svn .bzr _darcs
@@ -127,6 +415,3 @@ let g:ctrlp_user_command = {
 	\ }
 
 
-cnoreabbrev wq w<BAR>Bdelete
-cnoreabbrev q Bdelete
-cnoreabbrev qq exit
