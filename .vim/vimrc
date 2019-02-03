@@ -58,6 +58,11 @@ set smartindent
 
 set ignorecase " use case insensitive search per default
 
+if has('mouse')
+    set mouse=a
+endif
+
+
 if has("gui_running")
 	" GUI is running or is about to start.
 	" Maximize gvim window (for an alternative on Windows, see simalt below).
@@ -101,11 +106,6 @@ set backspace=indent,eol,start
 " use the system clipboard for yanking and pasting
 set clipboard=unnamed
 
-" http://vim.wikia.com/wiki/Use_ijkl_to_move_the_cursor_and_h_to_insert
-" map i <Up>
-" map j <Left>
-" map k <Down>
-" noremap h i
 
 " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
 inoremap jk <Esc>
@@ -126,8 +126,6 @@ let g:ctrlp_user_command = {
 	\ 'fallback': 'find %s -type f'
 	\ }
 
-
-nnoremap <Leader>q :Bdelete<CR>
 
 cnoreabbrev wq w<BAR>Bdelete
 cnoreabbrev q Bdelete
