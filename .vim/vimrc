@@ -80,7 +80,6 @@ endif
     set wrap " turn on line wrapping
     set wrapmargin=8 " wrap lines when coming within n characters from side
     set linebreak " set soft wrapping
-    set showbreak=‚Ä¶ " show ellipsis at breaking
     set autoindent " automatically set indent of new line
     set ttyfast " faster redrawing
     set diffopt+=vertical
@@ -115,8 +114,6 @@ endif
 
     " toggle invisible characters
     set list
-    set listchars=tab:‚Üí\ ,eol:¬¨,trail:‚ãÖ,extends:‚ùØ,precedes:‚ùÆ
-    set showbreak=‚Ü™
 
     set ruler " Display a vertical ruler
     set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
@@ -130,14 +127,14 @@ endif
         set t_ut=
     endif
 
-"    " enable 24 bit color support if supported
-"    if (has("termguicolors"))
-"        if (!(has("nvim")))
-"            let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-"            let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
-"        endif
-"        set termguicolors
-"    endif
+    " enable 24 bit color support if supported
+    if (has("termguicolors"))
+        if (!(has("nvim")))
+            let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+            let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+        endif
+        set termguicolors
+    endif
 
     " highlight conflicts
     match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
@@ -174,8 +171,8 @@ endif
         \   'separator': { 'left': '', 'right': '' },
         \   'subseparator': { 'left': '', 'right': '' }
         \ }
-        " \   'separator': { 'left': '‚ñì‚ñí‚ñë', 'right': '‚ñë‚ñí‚ñì' },
-        " \   'subseparator': { 'left': '‚ñí', 'right': '‚ñë' }
+        " \   'separator': { 'left': '¶¶¶', 'right': '¶¶¶' },
+        " \   'subseparator': { 'left': '¶', 'right': '¶' }
 
         function! LightlineFileName() abort
             let filename = winwidth(0) > 70 ? expand('%') : expand('%:t')
@@ -205,6 +202,9 @@ endif
 " General Mappings {{{
     " set a map leader for more key combos
     let mapleader = ','
+
+    " Marks should go to the column, not just the line. Why isn't this the default?
+    nnoremap ' `
 
     " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
     inoremap jk <Esc>
@@ -245,6 +245,10 @@ endif
     " switch between current and last buffer
     nmap <leader>. <c-^>
 
+    " Move between open buffers.
+    nmap <C-n> :bnext<CR>
+    nmap <C-p> :bprev<CR>
+
     " enable . command in visual mode
     vnoremap . :normal .<cr>
 
@@ -274,35 +278,39 @@ endif
     nnoremap <C-e> 3<C-e>
     nnoremap <C-y> 3<C-y>
 
+    " Turn off linewise keys. Normally, the `j' and `k' keys move the cursor down one entire line. with
+    " line wrapping on, this can cause the cursor to actually skip a few lines on the screen because
+    " it's moving from line N to line N+1 in the file. I want this to act more visually -- I want `down'
+    " to mean the next line on the screen
     " moving up and down work as you would expect
     nnoremap <silent> j gj
     nnoremap <silent> k gk
     nnoremap <silent> ^ g^
     nnoremap <silent> $ g$
 
+    " Use the space key to toggle folds
+    nnoremap <space> za
+    vnoremap <space> zf
+
+    " Super fast window movement shortcuts
+    nmap <C-j> <C-W>j
+    nmap <C-k> <C-W>k
+    nmap <C-h> <C-W>h
+    nmap <C-l> <C-W>l
+
+
     " helpers for dealing with other people's code
     nmap \t :set ts=4 sts=4 sw=4 noet<cr>
     nmap \s :set ts=4 sts=4 sw=4 et<cr>
 
-" }}}
 
-" AutoGroups {{{
-    " file type specific settings
-    augroup configgroup
-        autocmd!
-
-        " automatically resize panes on resize
-        autocmd VimResized * exe 'normal! \<c-w>='
-        autocmd BufWritePost .vimrc,.vimrc.local,init.vim source %
-        autocmd BufWritePost .vimrc.local source %
-        " save all files on focus lost, ignoring warnings about untitled buffers
-        autocmd FocusLost * silent! wa
-
-        " make quickfix windows take all the lower section of the screen
-        " when there are multiple windows open
-        autocmd FileType qf wincmd J
-        autocmd FileType qf nmap <buffer> q :q<cr>
-    augroup END
+    " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
+    nmap ; :Buffers<CR>
+    nmap <Leader>t :Tags<CR>
+    nmap <Leader>f :Files<CR>
+    nmap <Leader>a :Rg!<CR>
+    nmap <Leader>b :Buffers<CR>
+    " nmap <Leader>c :Colors<CR>
 " }}}
 
 " General Functionality {{{
@@ -318,8 +326,8 @@ endif
         let base16colorspace=256
         source ~/.vimrc_background
     else
-        let g:solarized_contrast="high"
-        colorscheme solarized
+        let base16colorspace=256
+        colorscheme base16-solarized-light
     endif
     syntax on
     filetype plugin indent on
@@ -344,7 +352,7 @@ endif
 if has("gui_running")
 	" GUI is running or is about to start.
 	" Maximize gvim window (for an alternative on Windows, see simalt below).
-	set lines=50 columns=170
+	set lines=37 columns=140
     set guioptions-=e
     set guioptions-=t
     set guioptions-=T
@@ -360,29 +368,3 @@ if has("gui_running")
         set guifont=Consolas:h11:cDEFAULT
   endif
 endif
-
-" When invoked, unless a starting directory is specified, CtrlP will set its local working
-" directory according to this variable:
-" 'c' - the directory of the current file.
-" 'r' - the nearest ancestor that contains one of these directories or files: .git .hg .svn .bzr _darcs
-" 'a' - like c, but only if the current working directory outside of CtrlP is not a direct ancestor of the directory of the current file.
-let g:ctrlp_working_path_mode = 'ra'
-
-if has('win32') || has ('win64')
-    let g:ctrlp_user_command = {
-                \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': 'dir %s /-n /b /s /a-d'
-                \ }
-else
-    let g:ctrlp_user_command = {
-                \ 'types': {
-                \ 1: ['.git', 'cd %s && git ls-files'],
-                \ 2: ['.hg', 'hg --cwd %s locate -I .'],
-                \ },
-                \ 'fallback': 'find %s -type f'
-                \ }
-endif
-
