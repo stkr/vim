@@ -11,4 +11,7 @@ mintty itself uses the config file ~/.config/mintty/config per default, therefor
 symling of this directory to ~/config/mintty, a multi layer configuration scheme can be achieved by
 doing the following (e.g. form the toatlcmd start menu):
 
-     C:\cygwin64\bin\mintty.exe -c %USERPROFILE%\.config\mintty\config_%COMPUTERNAME%_%USERNAME%
+    g:\applications\cygwin\bin\mintty.exe \
+    -c %USERPROFILE%\.config\mintty\config_%COMPUTERNAME%_%USERNAME% \
+    -e g:\applications\cygwin\bin\bash.exe --login -i \
+    -c 'cd "`cygpath "$*"`"; bash' bash
