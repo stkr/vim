@@ -201,15 +201,19 @@ function! s:open(cmd, target)
 endfunction
 
 function! s:common_sink(action, lines) abort
+
   if len(a:lines) < 2
-    return
+    let lines = [ '' ] + a:lines
+  else
+    let lines = a:lines
   endif
-  let key = remove(a:lines, 0)
+
+  let key = remove(lines, 0)
   let Cmd = get(a:action, key, 'e')
   if type(Cmd) == type(function('call'))
-    return Cmd(a:lines)
+    return Cmd(lines)
   endif
-  if len(a:lines) > 1
+  if len(lines) > 1
     augroup fzf_swap
       autocmd SwapExists * let v:swapchoice='o'
             \| call s:warn('fzf: E325: swap file exists: '.s:fzf_expand('<afile>'))
@@ -219,7 +223,7 @@ function! s:common_sink(action, lines) abort
     let empty = empty(s:fzf_expand('%')) && line('$') == 1 && empty(getline(1)) && !&modified
     let autochdir = &autochdir
     set noautochdir
-    for item in a:lines
+    for item in lines
       if empty
         execute 'e' s:escape(item)
         let empty = 0
