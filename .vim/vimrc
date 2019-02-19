@@ -113,7 +113,7 @@ endif
     set foldlevel=1
 
     " toggle invisible characters
-    set list
+    set list&
 
     set ruler " Display a vertical ruler
     set t_Co=256 " Explicitly tell vim that the terminal supports 256 colors
@@ -171,8 +171,8 @@ endif
         \   'separator': { 'left': '', 'right': '' },
         \   'subseparator': { 'left': '', 'right': '' }
         \ }
-        " \   'separator': { 'left': '¦¦¦', 'right': '¦¦¦' },
-        " \   'subseparator': { 'left': '¦', 'right': '¦' }
+        " \   'separator': { 'left': 'Â¦Â¦Â¦', 'right': 'Â¦Â¦Â¦' },
+        " \   'subseparator': { 'left': 'Â¦', 'right': 'Â¦' }
 
         function! LightlineFileName() abort
             let filename = winwidth(0) > 70 ? expand('%') : expand('%:t')
@@ -216,8 +216,8 @@ endif
     " set paste toggle
     set pastetoggle=<leader>v
 
-    " edit ~/.config/nvim/init.vim
-    map <leader>ev :e! ~/.config/nvim/init.vim<cr>
+    " edit vimrc.vim
+    map <leader>ev :e! <C-R>=g:vim_home<CR>vimrc<CR>
     " edit gitconfig
     map <leader>eg :e! ~/.gitconfig<cr>
 
@@ -235,6 +235,7 @@ endif
     inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
 
     nmap <leader>l :set list!<cr>
+    set listchars=eol:Â¬,tab:>Â·,trail:~,extends:>,precedes:<,space:â£
 
     " Textmate style indentation
     vmap <leader>[ <gv
