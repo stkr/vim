@@ -32,6 +32,7 @@ endif
 
     set history=1000 " change history to 1000
     set textwidth=120
+    set viminfo^=%25
 
     set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
     set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
@@ -42,7 +43,6 @@ endif
         set inccommand=nosplit
     endif
 
-    set backspace=indent,eol,start " make backspace behave in a sane manner
     set clipboard=unnamed
 
     if has('mouse')
@@ -71,6 +71,12 @@ endif
     set textwidth=100
     set colorcolumn=101
     set fileencodings=ucs-bom,utf8,prc
+
+    if has("persistent_undo")
+        set undodir=$HOME."/.undodir"
+        set undofile
+    endif
+
 " }}}
 
 
@@ -222,7 +228,7 @@ endif
     map <leader>eg :e! ~/.gitconfig<cr>
 
     " clear highlighted search
-    noremap <space> :set hlsearch! hlsearch?<cr>
+    " noremap <space> :set hlsearch! hlsearch?<cr>
 
     " activate spell-checking alternatives
     nmap ;s :set invspell spelllang=en<cr>
@@ -235,7 +241,7 @@ endif
     inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
 
     nmap <leader>l :set list!<cr>
-    set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+    " set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
 
     " Textmate style indentation
     vmap <leader>[ <gv
@@ -265,10 +271,6 @@ endif
     map <silent> <C-l> :call functions#WinMove('l')<cr>
 
     nnoremap <silent> <leader>z :call functions#zoom()<cr>
-
-    map <leader>wc :wincmd q<cr>
-
-    inoremap <tab> <c-r>=functions#Smart_TabComplete()<CR>
 
     vnoremap $( <esc>`>a)<esc>`<i(<esc>
     vnoremap $[ <esc>`>a]<esc>`<i[<esc>
@@ -317,6 +319,7 @@ endif
     nmap <Leader>f :Files<CR>
     nmap <Leader>a :Rg!<CR>
     nmap <Leader>b :Buffers<CR>
+    nmap <Leader>h :History<CR>
     " nmap <Leader>c :Colors<CR>
 " }}}
 
