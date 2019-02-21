@@ -268,7 +268,7 @@ endif
 
     map <leader>wc :wincmd q<cr>
 
-    inoremap <tab> <c-r>=functions#Smart_TabComplete()<CR>
+    " inoremap <tab> <c-r>=functions#Smart_TabComplete()<CR>
 
     vnoremap $( <esc>`>a)<esc>`<i(<esc>
     vnoremap $[ <esc>`>a]<esc>`<i[<esc>
@@ -375,3 +375,8 @@ if has("gui_running")
         set guifont=Consolas:h11:cDEFAULT
   endif
 endif
+
+
+
+set completeopt=preview
+
