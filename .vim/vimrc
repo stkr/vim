@@ -5,8 +5,10 @@ let mapleader=","
 
 if has('win32') || has ('win64')
 	let g:vim_home = $HOME."/vimfiles/"
+    let g:vim_hostname = $COMPUTERNAME
 else
 	let g:vim_home = $HOME."/.vim/"
+    let g:vim_hostname = $HOSTNAME
 endif
 
 " General {{{
@@ -312,7 +314,7 @@ endif
 
 
     " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
-    nmap ; :Buffers<CR>
+    " nmap ; :Buffers<CR>
     nmap <Leader>t :Tags<CR>
     nmap <Leader>f :Files<CR>
     nmap <Leader>a :Rg!<CR>
@@ -377,6 +379,48 @@ if has("gui_running")
 endif
 
 
+" Code completion {{{
 
-set completeopt=preview
+    if g:vim_hostname == 'NXL64850'
+        let &pythonthreedll='c:\Users\nxp29037\AppData\Local\Programs\Python\Python37-32\python37.dll'
+        let g:clangd_executable='c:\Program Files\LLVM\bin\clangd.exe'
+    endif
 
+    let g:asyncomplete_remove_duplicates = 1
+    let g:asyncomplete_auto_popup = 0
+    " let g:asyncomplete_log_file = expand('~/asyncomplete.log')
+
+
+    let g:asyncomplete_buffer_clear_cache = 1
+
+    " Clangd Language Server Protocol via vim-lsp:
+    if executable(g:clangd_executable)
+        au User lsp_setup call lsp#register_server({
+            \ 'name': 'clangd',
+            \ 'cmd': {server_info->[g:clangd_executable]},
+            \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+            \ })
+    endif
+
+    " let g:lsp_log_verbose = 1
+    " let g:lsp_log_file = expand('~/vim-lsp.log')
+
+    " Trigger code completion with tab:
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+    inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ asyncomplete#force_refresh()
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+    inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+    inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+    inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+    inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+    inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+    inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+" }}}
