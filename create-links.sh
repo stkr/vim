@@ -3,7 +3,7 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 DOTFILES=".vim .tmux.conf .bashrc"
-CONFIGDIRS="mintty"
+CONFIGDIRS="mintty vifm"
 
 for F in $DOTFILES; do
     if [[ -e "$HOME/$F" ]]; then
@@ -14,12 +14,12 @@ for F in $DOTFILES; do
     fi
 done
 
-for F in $DOTFILES; do
-    if [[ -e "$HOME/config/$F" ]]; then
-        echo "$HOME/config/$F exists, skipping."
+for F in $CONFIGDIRS; do
+    if [[ -e "$HOME/.config/$F" ]]; then
+        echo "$HOME/.config/$F exists, skipping."
     else
-        ln -s "$DIR/$F" "$HOME/config/$F"
-        echo "Created link for $HOME/config/$F."
+        ln -s "$DIR/$F" "$HOME/.config/$F"
+        echo "Created link for $HOME/.config/$F."
     fi
 done
 
