@@ -298,8 +298,8 @@ endif
     nnoremap <silent> $ g$
 
     " Use the space key to toggle folds
-    nnoremap <space> za
-    vnoremap <space> zf
+    " nnoremap <space> za
+    " vnoremap <space> zf
 
     " Super fast window movement shortcuts
     nmap <C-j> <C-W>j
