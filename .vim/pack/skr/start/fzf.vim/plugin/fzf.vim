@@ -139,6 +139,8 @@ inoremap <expr> <plug>(fzf-complete-file-ag)     fzf#vim#complete#path('ag -l -g
 inoremap <expr> <plug>(fzf-complete-line)        fzf#vim#complete#line()
 inoremap <expr> <plug>(fzf-complete-buffer-line) fzf#vim#complete#buffer_line()
 
+inoremap <expr> <plug>(fzf-complete-tag)         fzf#vim#complete#tag()
+
 nnoremap <silent> <plug>(fzf-maps-n) :<c-u>call fzf#vim#maps('n', 0)<cr>
 inoremap <silent> <plug>(fzf-maps-i) <c-o>:call fzf#vim#maps('i', 0)<cr>
 xnoremap <silent> <plug>(fzf-maps-x) :<c-u>call fzf#vim#maps('x', 0)<cr>
