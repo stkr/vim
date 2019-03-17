@@ -98,7 +98,7 @@ endif
     set showcmd " show incomplete commands
     set noshowmode " don't show which mode disabled for PowerLine
     set wildmode=list:longest " complete files like a shell
-    set shell=$SHELL
+    " set shell=$SHELL
     set cmdheight=1 " command bar height
     set title " set terminal title
     set showmatch " show matching braces
@@ -112,6 +112,9 @@ endif
     set softtabstop=4 " edit as if the tabs are 4 characters wide
     set shiftwidth=4 " number of spaces to use for indent and unindent
     set shiftround " round indent to a multiple of 'shiftwidth'
+
+    " Automatic formatting
+    set nojoinspaces " when joining lines, do not use two spaces after a sentence
 
     " code folding settings
     set foldmethod=syntax " fold based on indent
@@ -214,6 +217,24 @@ endif
     " Marks should go to the column, not just the line. Why isn't this the default?
     nnoremap ' `
 
+    "     "These are to cancel the default behavior of d, D, c, C
+    "     "  to put the text they delete in the default register.
+    "     "  Note that this means e.g. "ad won't copy the text into
+    "     "  register a anymore.  You have to explicitly yank it.
+    "     nnoremap d "_d
+    "     vnoremap d "_d
+    "     nnoremap D "_D
+    "     vnoremap D "_D
+    "     nnoremap c "_c
+    "     vnoremap c "_c
+    "     nnoremap C "_C
+    "     vnoremap C "_C
+    "     nnoremap p "_p
+    "     xnoremap P "_P
+    "     nnoremap p "_p
+    "     xnoremap P "_P
+
+    
     " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
     inoremap jk <Esc>
     inoremap kj <Esc>
@@ -254,10 +275,6 @@ endif
     " switch between current and last buffer
     nmap <leader>. <c-^>
 
-    " Move between open buffers.
-    nmap <C-n> :bnext<CR>
-    nmap <C-p> :bprev<CR>
-
     " enable . command in visual mode
     vnoremap . :normal .<cr>
 
@@ -267,10 +284,10 @@ endif
     inoremap <C-l> <Right>
     inoremap <C-h> <Left>
 
-    map <silent> <C-h> :call functions#WinMove('h')<cr>
-    map <silent> <C-j> :call functions#WinMove('j')<cr>
-    map <silent> <C-k> :call functions#WinMove('k')<cr>
-    map <silent> <C-l> :call functions#WinMove('l')<cr>
+    " map <silent> <C-h> :call functions#WinMove('h')<cr>
+    " map <silent> <C-j> :call functions#WinMove('j')<cr>
+    " map <silent> <C-k> :call functions#WinMove('k')<cr>
+    " map <silent> <C-l> :call functions#WinMove('l')<cr>
 
     nnoremap <silent> <leader>z :call functions#zoom()<cr>
 
@@ -329,6 +346,7 @@ endif
 
     " Close buffers but keep splits
     nmap <leader>q :Bdelete<cr>
+    nmap <leader>qq :Bdelete!<cr>
 " }}}
 
 " Colorscheme and final setup {{{
@@ -387,23 +405,39 @@ endif
     if g:vim_hostname == 'NXL64850'
         let &pythonthreedll='c:\Users\nxp29037\AppData\Local\Programs\Python\Python37-32\python37.dll'
         let g:clangd_executable='c:\Program Files\LLVM\bin\clangd.exe'
+    elseif g:vim_hostname == 'STEFAN-ASROCK'
+        let g:clangd_executable='g:\applications\LLVM\bin\clangd.exe'
+        " Unfortunately the language server seems to be broken...
+        " let g:omnisharp_sample_server_executable='g:\applications\csharp-language-server-protocol\sample\SampleServer\bin\Release\netcoreapp2.0\win7-x64\SampleServer.exe'
     endif
 
     let g:asyncomplete_remove_duplicates = 1
-    let g:asyncomplete_auto_popup = 0
+    let g:asyncomplete_auto_popup = 1
     " let g:asyncomplete_log_file = expand('~/asyncomplete.log')
 
 
     let g:asyncomplete_buffer_clear_cache = 1
 
     " Clangd Language Server Protocol via vim-lsp:
-    if executable(g:clangd_executable)
+    if exists("g:clangd_executable") && executable(g:clangd_executable)
         au User lsp_setup call lsp#register_server({
             \ 'name': 'clangd',
             \ 'cmd': {server_info->[g:clangd_executable]},
             \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
             \ })
     endif
+    
+    " Omnisharp Language Server Protocol via vim-lsp:
+    " g:omnisharp_sample_server_executablejj
+    " g:omnisharp_sample_server_executable
+    if exists("g:omnisharp_sample_server_executable") && executable(g:omnisharp_sample_server_executable)
+        au User lsp_setup call lsp#register_server({
+            \ 'name': 'omisharp',
+            \ 'cmd': {server_info->[g:omnisharp_sample_server_executable]},
+            \ 'whitelist': ['cs'],
+            \ })
+    endif
+    
 
     " let g:lsp_log_verbose = 1
     " let g:lsp_log_file = expand('~/vim-lsp.log')
