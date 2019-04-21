@@ -5,6 +5,8 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DOTFILES=".vim .tmux.conf .bashrc"
 CONFIGDIRS="mintty vifm"
 
+mkdir -p "$HOME/.config"
+
 for F in $DOTFILES; do
     if [[ -e "$HOME/$F" ]]; then
         echo "$HOME/$F exists, skipping."
