@@ -50,13 +50,17 @@ if [ $SYMLINK = true ]; then
 
     for F in $DOTFILES; do
 
+        echo "Processing $F:"
+
         if [[ -e "$HOME/$F" ]]; then
-            echo "$HOME/$F exists, skipping."
+            echo "    existing (skipping): $HOME/$F"
         else
             ln -s "$DIR/$F" "$HOME/$F"
-            echo "Created link for $HOME/$F."
+            echo "    created: $HOME/$F"
         fi
 
+        echo "    done"
+        echo
     done
 
 else
