@@ -135,7 +135,8 @@ fi
 # log-in users Xauthority file and reuse his credentials.
 if [ "$USER" = "root" ]; then
     LOGIN_USER=$( logname )
-    xauth add $( xauth -f ~$LOGIN_USER/.Xauthority list | tail -1 )
+    LOGIN_HOME=$( getent passwd "$LOGIN_USER" | cut -f6 -d: )
+    xauth add $( xauth -f "$LOGIN_HOME/.Xauthority" list | tail -1 )
 fi
 
 
