@@ -5,7 +5,7 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Files that will be copied/symlinked to $HOME
-DOTFILES=".vim .tmux.conf .bashrc .config/mintty"
+DOTFILES=".vim .tmux.conf .bashrc .config/mintty .ssh/config"
 
 #
 # If we are on windows/cygwin, there is the chance that the config files are
