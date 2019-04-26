@@ -146,3 +146,7 @@ if [ -e $HOME/local/bin/vim ]; then
     alias vim=$HOME/local/bin/vim
 fi
 
+if command -v vim >/dev/null 2>&1; then
+    export VISUAL=vim
+    export EDITOR=$VISUAL
+fi
