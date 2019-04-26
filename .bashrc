@@ -140,3 +140,9 @@ if [ "$USER" = "root" ]; then
 fi
 
 
+# In case there is a vim installation in the user's local directory, then use this one over the
+# system default!
+if [ -e $HOME/local/bin/vim ]; then
+    alias vim=$HOME/local/bin/vim
+fi
+
