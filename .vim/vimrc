@@ -346,8 +346,7 @@ endif
 " Colorscheme and final setup {{{
 
     set background=light
-    let base16colorspace=256
-    colorscheme base16-solarized-light
+    colorscheme solarized8_high
 
     syntax on
     filetype plugin indent on
