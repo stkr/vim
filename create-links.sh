@@ -5,7 +5,14 @@ set -e
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Files that will be copied/symlinked to $HOME
-DOTFILES=".vim .tmux.conf .bashrc .config/mintty .ssh/config"
+DOTFILES=(
+    ".vim"           ".vim"           
+    ".tmux.conf"     ".tmux.conf"     
+    ".bashrc"        ".bashrc"        
+    ".profile"       ".profile"       
+    ".config/mintty" ".config/mintty" 
+    ".ssh/config"    ".ssh/config"
+    )
 
 #
 # If we are on windows/cygwin, there is the chance that the config files are
@@ -41,26 +48,31 @@ fi
 
 # Create config directory
 mkdir -p "$HOME/.config"
-
+mkdir -p "$HOME/.tmp"
 
 if [ $SYMLINK = true ]; then
 
     echo "Creating symlinks for configuration files..."
     echo
 
-    for F in $DOTFILES; do
+    for ((i=0; i<${#DOTFILES[*]}; i+=2));
+    do
+        F=${DOTFILES[i]}
+        SRC="$DIR/${DOTFILES[i]}"
+        DST=$HOME/${DOTFILES[i+1]}
 
         echo "Processing $F:"
 
-        if [[ -e "$HOME/$F" ]]; then
-            echo "    existing (skipping): $HOME/$F"
+        if [[ -e "$DST" ]]; then
+            echo "    existing (skipping): $F"
         else
-            ln -s "$DIR/$F" "$HOME/$F"
-            echo "    created: $HOME/$F"
+            ln -s "$SRC" "$DST"
+            echo "    created: $DST"
         fi
 
         echo "    done"
         echo
+
     done
 
 else
@@ -68,36 +80,40 @@ else
     echo "Copying configuration files..."
     echo
 
-    for F in $DOTFILES; do
+    for ((i=0; i<${#DOTFILES[*]}; i+=2));
+    do
+        F=${DOTFILES[i]}
+        SRC="$DIR/${DOTFILES[i]}"
+        DST=$HOME/${DOTFILES[i+1]}
 
         echo "Processing $F:"
 
-        if [[ -d "$DIR/$F" ]]; then
+        if [[ -d "$SRC" ]]; then
 
-            if [[ -e "$HOME/$F" ]]; then
-                echo "    existing: $HOME/$F"
-                if [[ -e "$HOME/$F.tgz" ]]; then
-                    echo "        deleting old backup: $HOME/$F.tgz"
-                    rm "$HOME/$F.tgz"
+            if [[ -e "$DST" ]]; then
+                echo "    existing: $DST"
+                if [[ -e "$DST.tgz" ]]; then
+                    echo "        deleting old backup: $DST.tgz"
+                    rm "$DST.tgz"
                 fi
-                echo "        creating backup $HOME/$F.tgz"
-                tar cfz "$HOME/$F.tgz" -C "$HOME/" "$F"
-                echo "        deleting: $HOME/$F"
-                rm -r "$HOME/$F"
+                echo "        creating backup $DST.tgz"
+                tar cfz "$DST.tgz" -C "$HOME/" "$F"
+                echo "        deleting: $DST"
+                rm -r "$DST"
             fi
 
-            echo "    copying: $HOME/$F"
-            cp -r "$DIR/$F" "$HOME/$F"
+            echo "    copying to: $DST"
+            cp -r "$SRC" "$DST"
 
         else
 
-            if [[ -e "$HOME/$F" ]]; then
-                echo "    existing: $HOME/$F"
-                echo "        creating backup $HOME/$F.bak"
-                mv "$HOME/$F" "$HOME/$F.bak"
+            if [[ -e "$DST" ]]; then
+                echo "    existing: $DST"
+                echo "        creating backup $DST"
+                mv "$DST" "$DST.bak"
             fi
-            echo "    copying: $HOME/$F"
-            cp "$DIR/$F" "$HOME/$F"
+            echo "    copying to: $DST"
+            cp "$SRC" "$DST"
         fi
 
         echo "    done"
