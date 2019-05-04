@@ -23,3 +23,4 @@ Term=xterm-256color
 FontHeight=11
 Columns=141
 Rows=39
+AllowSetSelection=true
