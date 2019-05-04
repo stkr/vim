@@ -12,6 +12,7 @@ DOTFILES=(
     ".profile"       ".profile"       
     ".config/mintty" ".config/mintty" 
     ".ssh/config"    ".ssh/config"
+    "local/bin/yank" "local/bin/yank"
     )
 
 #
@@ -49,6 +50,7 @@ fi
 # Create config directory
 mkdir -p "$HOME/.config"
 mkdir -p "$HOME/.tmp"
+mkdir -p "$HOME/local/bin"
 
 if [ $SYMLINK = true ]; then
 
@@ -65,6 +67,9 @@ if [ $SYMLINK = true ]; then
 
         if [[ -e "$DST" ]]; then
             echo "    existing (skipping): $F"
+            if [[ ! -h "$DST" ]]; then
+                echo "    WARNING: $DST is not a symlink!"
+            fi
         else
             ln -s "$SRC" "$DST"
             echo "    created: $DST"
