@@ -116,37 +116,26 @@ fi
 # Set shell into vi mode
 set -o vi
 
-
-# In case we are not running in a graphical terminal, the DISPLAY
-# environment may not be set (this is usually the case when running in a
-# mintty which runs a cygwin/minGW bash).
-# On those cases, the assumption is that an X-server is running on a
-# defined display number on localhost. We set up the environment
-# accordingly.
-if [ -z "$DISPLAY" ]; then
-    export DISPLAY=127.0.0.1:1604.0
-fi
-
-
-# Typical ssh usage is to log in with a regular user account and gain
-# more permissions for system administration using sudo. However, in that
-# case x11 forwarding is broken since the log-in user is the one holding
-# the x11 credentials. If we are root, then normally we have access to the
-# log-in users Xauthority file and reuse his credentials.
-if [ "$USER" = "root" ]; then
-    LOGIN_USER=$( logname )
-    LOGIN_HOME=$( getent passwd "$LOGIN_USER" | cut -f6 -d: )
-    xauth add $( xauth -f "$LOGIN_HOME/.Xauthority" list | tail -1 )
-fi
-
-
-# In case there is a vim installation in the user's local directory, then use this one over the
-# system default!
-if [ -e $HOME/local/bin/vim ]; then
-    alias vim=$HOME/local/bin/vim
-fi
-
-if command -v vim >/dev/null 2>&1; then
-    export VISUAL=vim
-    export EDITOR=$VISUAL
-fi
+# 
+# # In case we are not running in a graphical terminal, the DISPLAY
+# # environment may not be set (this is usually the case when running in a
+# # mintty which runs a cygwin/minGW bash).
+# # On those cases, the assumption is that an X-server is running on a
+# # defined display number on localhost. We set up the environment
+# # accordingly.
+# if [ -z "$DISPLAY" ]; then
+#     export DISPLAY=127.0.0.1:1604.0
+# fi
+# 
+# 
+# # Typical ssh usage is to log in with a regular user account and gain
+# # more permissions for system administration using sudo. However, in that
+# # case x11 forwarding is broken since the log-in user is the one holding
+# # the x11 credentials. If we are root, then normally we have access to the
+# # log-in users Xauthority file and reuse his credentials.
+# if [ "$USER" = "root" ]; then
+#     LOGIN_USER=$( logname )
+#     LOGIN_HOME=$( getent passwd "$LOGIN_USER" | cut -f6 -d: )
+#     xauth add $( xauth -f "$LOGIN_HOME/.Xauthority" list | tail -1 )
+# fi
+# 

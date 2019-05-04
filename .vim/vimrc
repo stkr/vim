@@ -228,6 +228,17 @@ endif
     "     nnoremap p "_p
     "     xnoremap P "_P
 
+    " copy to attached terminal using the yank(1) script:
+    " https://github.com/sunaku/home/blob/master/bin/yank
+    function! Yank(text) abort
+        let escape = system('yank', a:text)
+        if v:shell_error
+            echoerr escape
+        else
+            call writefile([escape], '/dev/tty', 'b')
+        endif
+    endfunction
+    noremap <silent> <Leader>y y:<C-U>call Yank(@0)<CR>
     
     " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
     inoremap jk <Esc>
