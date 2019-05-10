@@ -6,9 +6,11 @@ let mapleader=","
 if has('win32') || has ('win64')
 	let g:vim_home = $HOME."/vimfiles/"
     let g:vim_hostname = $COMPUTERNAME
+    set clipboard=unnamed
 else
 	let g:vim_home = $HOME."/.vim/"
     let g:vim_hostname = $HOSTNAME
+    set clipboard=unnamedplus
 endif
 
 " General {{{
@@ -36,6 +38,12 @@ endif
     set textwidth=120
     set viminfo^=%25
 
+    " Uncomment the following to have Vim jump to the last position when
+    " reopening a file
+    if has("autocmd")
+        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    endif
+
     set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
     set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
 
@@ -44,8 +52,6 @@ endif
         " but don't open a split
         set inccommand=nosplit
     endif
-
-    set clipboard=unnamed
 
     if has('mouse')
         set mouse=a
@@ -377,7 +383,7 @@ if has("gui_running")
     set guioptions-=t
     set guioptions-=T
 	if has("gui_gtk2") || has("gui_gtk3")
-        set guifont=Consolas:11
+        set guifont=Consolas\ 11,Inconsolata\ 11
     elseif has("gui_photon")
         set guifont=Consolas:s11
     elseif has("gui_kde")
