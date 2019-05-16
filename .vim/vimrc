@@ -362,6 +362,12 @@ endif
     " Command line abbreviation so %% expands to the full path of 
     " the directory that contains the current file
     cabbr <expr> %% expand('%:p:h')
+
+    " Start interactive EasyAlign in visual mode (e.g. vipga)
+    xmap ga <Plug>(EasyAlign)
+
+    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+    nmap ga <Plug>(EasyAlign)
 " }}}
 
 " Colorscheme and final setup {{{
