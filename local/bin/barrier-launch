@@ -1,0 +1,38 @@
+#!/bin/sh
+
+# Start an ssh tunnel to a server hosting a barrier server in order to be able to control the
+# keyboard and mouse of the client from there.
+
+# Try to detect which network we are on. At the end of this we need to have:
+#   - The ip address of the barrier host (barrier_server_ip)
+#   - The port number to use for barrier (barrier_server_port)
+
+# Check for the default gateway. If this one has a value that we would expect in one of the known
+# networks, we can continue investigations for a precise network detection.
+route=$(ip route show)
+gateway=$(echo $route | grep -i -e 'default via' | cut -d ' ' -f 3)
+(>&2 echo "detected default gateway: [$gateway]")
+
+if [ -z "$gateway" ]; then
+    exit 0
+elif [ "$gateway" = "10.0.0.138" ]; then
+    mac=$(arp "$gateway" | grep -i -o -E -e '[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}:[0-9a-f]{2}')
+    (>&2 echo "detected gateway mac address: [$mac]")
+    if [ -z "$mac" ]; then 
+        exit 0
+    elif [ "$mac" = "a4:b1:e9:85:64:cc" ]; then
+       # This is the graz network! We can control the laptop from the stationary desktop pc!
+       # TODO: This is not very robust, but typically stationary host ip addresses do not change...
+       barrier_server_ip=10.0.0.4
+       barrier_server_port=24800
+    fi
+fi
+
+ctrl="$XDG_RUNTIME_DIR/barrier-tunnel-ctrl"
+
+(>&2 echo "using barrier host [$barrier_server_ip:$barrier_server_port] ($ctrl)")
+ssh -nNfMS "$ctrl" "-L$barrier_server_port:127.0.0.1:$barrier_server_port" "$barrier_server_ip" 
+ssh -S "$ctrl" -O check "$barrier_server_ip"
+barrierc --no-daemon --no-restart --enable-crypto --name stefan-dell 127.0.0.1
+trap 'ssh -S "$ctrl" -O exit "$barrier_server_ip"' 1 2 15
+
