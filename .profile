@@ -51,3 +51,10 @@ if command -v vim >/dev/null 2>&1; then
     export VISUAL=vim
     export EDITOR=$VISUAL
 fi
+
+# start into x upon login on vt1
+if command -v startx >/dev/null 2>&1; then
+    if [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+        exec startx
+    fi
+fi
