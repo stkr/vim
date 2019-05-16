@@ -6,13 +6,15 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 # Files that will be copied/symlinked to $HOME
 DOTFILES=(
-    ".tmux.conf"        ".tmux.conf"
-    ".bashrc"           ".bashrc"
-    ".profile"          ".profile"
-    ".config/mintty"    ".config/mintty"
-    ".config/i3/config" ".config/i3/config"
-    ".ssh/config"       ".ssh/config"
-    "local/bin/yank"    "local/bin/yank"
+    ".tmux.conf"               ".tmux.conf"
+    ".bashrc"                  ".bashrc"
+    ".profile"                 ".profile"
+    ".config/mintty"           ".config/mintty"
+    ".xinitrc"                 ".xinitrc"
+    ".config/i3/config"        ".config/i3/config"
+    ".ssh/config"              ".ssh/config"
+    "local/bin/yank"           "local/bin/yank"
+    "local/bin/barrier-launch" "local/bin/barrier-launch"
     )
 
 #
