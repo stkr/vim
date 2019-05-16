@@ -356,8 +356,12 @@ endif
 " General Functionality {{{
 
     " Close buffers but keep splits
-    nmap <leader>q :Bdelete<cr>
-    nmap <leader>qq :Bdelete!<cr>
+    nnoremap <leader>q :Sayonara<cr>
+    nnoremap <leader>Q :Sayonara!<cr>
+
+    " Command line abbreviation so %% expands to the full path of 
+    " the directory that contains the current file
+    cabbr <expr> %% expand('%:p:h')
 " }}}
 
 " Colorscheme and final setup {{{
