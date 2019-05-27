@@ -13,6 +13,8 @@ DOTFILES=(
     ".xinitrc"                 ".xinitrc"
     ".config/i3/config"        ".config/i3/config"
     ".ssh/config"              ".ssh/config"
+    ".vim"                     ".vim"
+    ".vim"                     "vimfiles"
     "local/bin/yank"           "local/bin/yank"
     "local/bin/barrier-launch" "local/bin/barrier-launch"
     )
@@ -42,7 +44,7 @@ elif [ "$(expr substr $(uname -s) 1 10)" = "MINGW32_NT" ]; then
     SYMLINK=false
 elif [ "$(expr substr $(uname -s) 1 10)" = "MINGW64_NT" ]; then
     # Do something under 64 bits Windows NT platform
-    SYMLINK=true
+    SYMLINK=false
 elif [ "$(uname)" = "Darwin" ]; then
     # Do something under Mac OS X platform
     SYMLINK=false
@@ -50,7 +52,8 @@ fi
 
 
 # Create config directory
-mkdir -p "$HOME/.config"
+mkdir -p "$HOME/.config/mintty"
+mkdir -p "$HOME/.config/i3"
 mkdir -p "$HOME/.tmp"
 mkdir -p "$HOME/local/bin"
 
