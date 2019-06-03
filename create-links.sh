@@ -8,6 +8,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 DOTFILES=(
     ".tmux.conf"               ".tmux.conf"
     ".bashrc"                  ".bashrc"
+    ".ideavimrc"               ".ideavimrc"
     ".profile"                 ".profile"
     ".config/mintty"           ".config/mintty"
     ".xinitrc"                 ".xinitrc"

@@ -1,0 +1,27 @@
+source ~/vimfiles/vimrc
+
+nnoremap <Leader>t :action GotoSymbol<CR>
+nnoremap <Leader>f :action GotoFile<CR>
+nnoremap <Leader>b :action RecentChangedFiles<CR>
+
+set showmode
+set surround
+
+" Move between open buffers.
+nmap <C-n> :action NextTab<CR>
+nmap <C-p> :action PreviousTab<CR>
+nnoremap <Leader>. :action Switcher<CR>
+
+
+" Navigation cursors in insert mode
+inoremap <C-k> <Up>
+inoremap <C-j> <Down>
+inoremap <C-l> <Right>
+inoremap <C-h> <Left>
+
+" Reformat code
+nnoremap gq :action ReformatCode<CR>
+vnoremap gq :action ReformatCode<CR>
+
+
+
