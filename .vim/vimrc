@@ -245,7 +245,7 @@ endif
         endif
     endfunction
     noremap <silent> <Leader>y y:<C-U>call Yank(@0)<CR>
-    
+
     " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
     inoremap jk <Esc>
     inoremap kj <Esc>
@@ -359,7 +359,7 @@ endif
     nnoremap <leader>q :Sayonara<cr>
     nnoremap <leader>Q :Sayonara!<cr>
 
-    " Command line abbreviation so %% expands to the full path of 
+    " Command line abbreviation so %% expands to the full path of
     " the directory that contains the current file
     cabbr <expr> %% expand('%:p:h')
 
@@ -418,7 +418,7 @@ endif
     endif
 
     let g:asyncomplete_remove_duplicates = 1
-    let g:asyncomplete_auto_popup = 1
+    let g:asyncomplete_auto_popup = 0
     " let g:asyncomplete_log_file = expand('~/asyncomplete.log')
 
 
@@ -432,7 +432,7 @@ endif
             \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
             \ })
     endif
-    
+
     " Omnisharp Language Server Protocol via vim-lsp:
     " g:omnisharp_sample_server_executablejj
     " g:omnisharp_sample_server_executable
@@ -443,7 +443,7 @@ endif
             \ 'whitelist': ['cs'],
             \ })
     endif
-    
+
 
     " let g:lsp_log_verbose = 1
     " let g:lsp_log_file = expand('~/vim-lsp.log')
@@ -458,6 +458,23 @@ endif
         \ <SID>check_back_space() ? "\<TAB>" :
         \ asyncomplete#force_refresh()
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+    " Trigger code completion with ctrl space
+    if has("gui_running")
+        " C-Space seems to work under gVim on both Linux and win32
+        inoremap <C-Space> <C-n>
+    else " no gui
+        if has("unix")
+            " The typical terminal emulation inserts a \0 character for ctrl+space
+            " We remap that
+            inoremap <Nul> <C-n>
+        elseif has('win32') || has ('win64')
+            inoremap <C-Space> <C-n>
+            " inoremap <Nul> <C-n>
+        endif
+    endif
+
+
 
     inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
     inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
