@@ -57,6 +57,7 @@ mkdir -p "$HOME/.config/mintty"
 mkdir -p "$HOME/.config/i3"
 mkdir -p "$HOME/.tmp"
 mkdir -p "$HOME/local/bin"
+mkdir -p "$HOME/.ssh"
 
 if [ $SYMLINK = true ]; then
 
