@@ -30,7 +30,7 @@ font pango:monospace 12
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Return exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -186,3 +186,4 @@ bar {
 
 exec --no-startup-id i3-msg 'workspace 10; exec termite --title=barrier -e "barrier-launch"'
 exec --no-startup-id i3-msg 'workspace  2; exec termite --title=tmux-main -e "tmux new-session -s main"'
+exec /usr/bin/pasystray
