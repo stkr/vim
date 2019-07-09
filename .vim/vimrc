@@ -276,7 +276,7 @@ endif
 
     "" from http://vim.wikia.com/wiki/Quickly_adding_and_deleting_empty_lines
     nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
-    nnoremap <silent><C-j> :set paste<CR>m.O<Esc>`.:set nopaste<CR>
+    nnoremap <silent><C-j> :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
     nmap <leader>l :set list!<cr>
     " set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
