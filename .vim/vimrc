@@ -274,6 +274,10 @@ endif
     inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
     inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
 
+    "" from http://vim.wikia.com/wiki/Quickly_adding_and_deleting_empty_lines
+    nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
+    nnoremap <silent><C-j> :set paste<CR>m.O<Esc>`.:set nopaste<CR>
+
     nmap <leader>l :set list!<cr>
     " set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
 
@@ -332,10 +336,10 @@ endif
     " vnoremap <space> zf
 
     " Super fast window movement shortcuts
-    nmap <C-j> <C-W>j
-    nmap <C-k> <C-W>k
-    nmap <C-h> <C-W>h
-    nmap <C-l> <C-W>l
+    " nmap <C-j> <C-W>j
+    " nmap <C-k> <C-W>k
+    " nmap <C-h> <C-W>h
+    " nmap <C-l> <C-W>l
 
 
     " helpers for dealing with other people's code
