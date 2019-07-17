@@ -56,10 +56,21 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
+# if [ -f ~/.git-prompt.sh ]; then
+#     . ~/.git-prompt.sh
+#     GIT_PS1_SHOWDIRTYSTATE=1
+#     GIT_PS1_SHOWSTASHSTATE=1
+#     GIT_PS1_SHOWUNTRACKEDFILES=1
+#     git_ps1_suffix=$(__git_ps1)
+#     echo "suffix: ${git_ps1_suffix}"
+# fi
+
+
+
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\n\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\[$(__git_ps1)\]'$'\n$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h \w\n\$ '
+    PS1='${debian_chroot:+($debian_chroot)}\u@\h \w\[$(__git_ps1)\]'$'\n$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -112,11 +123,10 @@ if ! shopt -oq posix; then
   fi
 fi
 
-
 # Set shell into vi mode
 set -o vi
 
-# 
+#
 # # In case we are not running in a graphical terminal, the DISPLAY
 # # environment may not be set (this is usually the case when running in a
 # # mintty which runs a cygwin/minGW bash).
@@ -126,8 +136,8 @@ set -o vi
 # if [ -z "$DISPLAY" ]; then
 #     export DISPLAY=127.0.0.1:1604.0
 # fi
-# 
-# 
+#
+#
 # # Typical ssh usage is to log in with a regular user account and gain
 # # more permissions for system administration using sudo. However, in that
 # # case x11 forwarding is broken since the log-in user is the one holding
@@ -138,4 +148,4 @@ set -o vi
 #     LOGIN_HOME=$( getent passwd "$LOGIN_USER" | cut -f6 -d: )
 #     xauth add $( xauth -f "$LOGIN_HOME/.Xauthority" list | tail -1 )
 # fi
-# 
+#
