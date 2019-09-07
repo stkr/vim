@@ -56,16 +56,16 @@ if [ -n "$force_color_prompt" ]; then
     fi
 fi
 
-# if [ -f ~/.git-prompt.sh ]; then
-#     . ~/.git-prompt.sh
-#     GIT_PS1_SHOWDIRTYSTATE=1
-#     GIT_PS1_SHOWSTASHSTATE=1
-#     GIT_PS1_SHOWUNTRACKEDFILES=1
-#     git_ps1_suffix=$(__git_ps1)
-#     echo "suffix: ${git_ps1_suffix}"
-# fi
+if [ -f /usr/share/git/completion/git-completion.bash ]; then
+     . /usr/share/git/completion/git-completion.bash
+fi
 
-
+if [ -f /usr/share/git/completion/git-prompt.sh ]; then
+     GIT_PS1_SHOWDIRTYSTATE=1
+     GIT_PS1_SHOWSTASHSTATE=1
+     GIT_PS1_SHOWUNTRACKEDFILES=1
+     . /usr/share/git/completion/git-prompt.sh
+fi
 
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\[$(__git_ps1)\]'$'\n$ '
