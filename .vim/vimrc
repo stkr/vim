@@ -372,6 +372,13 @@ endif
 
     " Start interactive EasyAlign for a motion/text object (e.g. gaip)
     nmap ga <Plug>(EasyAlign)
+
+    " After block yank and paste, move cursor to the end of operated text 
+    " and don't override register
+    vnoremap y y`]
+    vnoremap p "_dP`]
+    nnoremap p p`]
+    
 " }}}
 
 " Colorscheme and final setup {{{
