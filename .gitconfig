@@ -21,5 +21,7 @@
     f = "!git ls-files | grep -i"
 
     unstage = reset --soft HEAD^
+    delete-nontracking-branches = "! git branch --list --format \"%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)\" | sed '/^$/d' | xargs git branch -d "
+
 [credential]
 	helper = manager
