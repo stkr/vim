@@ -4,6 +4,8 @@ nnoremap <Leader>t :action GotoSymbol<CR>
 nnoremap <Leader>f :action GotoFile<CR>
 nnoremap <Leader>b :action RecentChangedFiles<CR>
 
+nnoremap <Leader>q :action CloseEditor<CR>
+
 set showmode
 set surround
 
@@ -25,3 +27,4 @@ vnoremap gq :action ReformatCode<CR>
 
 
 
+set clipboard+=ideaput
