@@ -279,7 +279,10 @@ endif
     nnoremap <silent><C-j> :set paste<CR>m`O<Esc>``:set nopaste<CR>
 
     nmap <leader>l :set list!<cr>
-    " set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+    set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+
+    " Toggle highlighting of search results
+    :nnoremap <silent><expr> <Leader>s (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
 
     " Textmate style indentation
     vmap <leader>[ <gv
@@ -376,7 +379,7 @@ endif
     " After block yank and paste, move cursor to the end of operated text 
     " and don't override register
     vnoremap y y`]
-    vnoremap p "_dP`]
+    vnoremap <expr> p 'pgv"'.v:register.'y`]'
     nnoremap p p`]
     
 " }}}
