@@ -328,6 +328,9 @@ endif
     nnoremap <C-e> 3<C-e>
     nnoremap <C-y> 3<C-y>
 
+    autocmd! BufWinLeave * let b:winview = winsaveview()
+    autocmd! BufWinEnter * if exists('b:winview') | call winrestview(b:winview) | unlet b:winview
+
     " Turn off linewise keys. Normally, the `j' and `k' keys move the cursor down one entire line. with
     " line wrapping on, this can cause the cursor to actually skip a few lines on the screen because
     " it's moving from line N to line N+1 in the file. I want this to act more visually -- I want `down'
