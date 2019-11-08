@@ -1,0 +1,27 @@
+[diff]
+	tool = bc
+[difftool "bc"]
+	path = c:/Program Files/Beyond Compare 4/bcomp.exe
+[merge]
+	tool = bc
+[mergetool "bc"]
+	path = c:/Program Files/Beyond Compare 4/bcomp.exe
+[alias]
+    co = checkout
+    st = status
+    cm = commit
+    logs = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
+    logl = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
+    ls = ls-files
+    lsm = ls-files -m
+    lso = ls-files -o --exclude-standard
+    au = add -u
+
+    la = "!git config -l | grep alias | cut -c 7-"
+    f = "!git ls-files | grep -i"
+
+    unstage = reset --soft HEAD^
+    delete-nontracking-branches = "! git branch --list --format \"%(if:equals=[gone])%(upstream:track)%(then)%(refname:short)%(end)\" | sed '/^$/d' | xargs git branch -d "
+
+[credential]
+	helper = manager
