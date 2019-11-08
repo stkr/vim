@@ -20,10 +20,10 @@ elif [ "$gateway" = "10.0.0.138" ]; then
     (>&2 echo "detected gateway mac address: [$mac]")
     if [ -z "$mac" ]; then 
         exit 0
-    elif [ "$mac" = "a4:b1:e9:85:64:cc" ]; then
+    elif [ "$mac" = "98:9b:cb:b5:2f:42" ]; then
        # This is the graz network! We can control the laptop from the stationary desktop pc!
        # TODO: This is not very robust, but typically stationary host ip addresses do not change...
-       barrier_server_ip=10.0.0.4
+       barrier_server_ip=10.0.0.20
        barrier_server_port=24800
     fi
 fi
