@@ -89,6 +89,8 @@ endif
         set undofile
     endif
 
+    set virtualedit=block
+
 " }}}
 
 
@@ -431,7 +433,7 @@ endif
 
     if g:vim_hostname == 'NXL64850'
         let &pythonthreedll='c:\Users\nxp29037\AppData\Local\Programs\Python\Python37-32\python37.dll'
-        let g:clangd_executable='c:\Program Files\LLVM\bin\clangd.exe'
+        let g:clangd_executable='c:\msys64\mingw64\bin\clangd.exe'
     elseif g:vim_hostname == 'STEFAN-ASROCK'
         let g:clangd_executable='g:\applications\LLVM\bin\clangd.exe'
         " Unfortunately the language server seems to be broken...
