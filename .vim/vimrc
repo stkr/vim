@@ -367,6 +367,9 @@ endif
     nmap <Leader>b :Buffers<CR>
     nmap <Leader>h :History<CR>
     " nmap <Leader>c :Colors<CR>
+
+    nmap gqq :call FormatDocument()<CR>
+
 " }}}
 
 " General Functionality {{{
@@ -390,6 +393,9 @@ endif
     vnoremap y y`]
     vnoremap <expr> p 'pgv"'.v:register.'y`]'
     nnoremap p p`]
+
+    " Syntastic setting to always report errors in the location list.
+    let g:syntastic_always_populate_loc_list = 1
     
 " }}}
 
@@ -436,6 +442,7 @@ endif
         let g:clangd_executable='c:\msys64\mingw64\bin\clangd.exe'
     elseif g:vim_hostname == 'STEFAN-ASROCK'
         let g:clangd_executable='g:\applications\LLVM\bin\clangd.exe'
+        let g:rls_executable='g:\applications\rust\rustup\toolchains\stable-x86_64-pc-windows-msvc\bin\rls.exe'
         " Unfortunately the language server seems to be broken...
         " let g:omnisharp_sample_server_executable='g:\applications\csharp-language-server-protocol\sample\SampleServer\bin\Release\netcoreapp2.0\win7-x64\SampleServer.exe'
     endif
@@ -448,11 +455,21 @@ endif
     let g:asyncomplete_buffer_clear_cache = 1
 
     " Clangd Language Server Protocol via vim-lsp:
-    if exists("g:clangd_executable") && executable(g:clangd_executable)
+    if exists('g:clangd_executable') && executable(g:clangd_executable)
         au User lsp_setup call lsp#register_server({
             \ 'name': 'clangd',
             \ 'cmd': {server_info->[g:clangd_executable]},
             \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+            \ })
+    endif
+
+
+    if exists('g:rls_executable') && executable(g:rls_executable)
+        au user lsp_setup call lsp#register_server({
+            \ 'name': 'rls',
+            \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+            \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+            \ 'whitelist': ['rust'],
             \ })
     endif
 
@@ -508,5 +525,52 @@ endif
     inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
     inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
     inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+" }}}
+
+" {{{ Formatting of a document
+    
+    function! FormatDocument()
+        write
+        let filename = expand("%:p") 
+        if &filetype ==# 'rust'
+            let format_command = "rustfmt " . fnameescape(filename) 
+            let output = system(format_command)
+            edit
+        endif
+    endfunction
+" }}}
+
+
+
+" {{{ Location lists and quickfix
+"
+    " wrap :cnext/:cprevious and :lnext/:lprevious
+    function! WrapCommand(direction, prefix)
+        if a:direction == "up"
+            try
+                execute a:prefix . "previous"
+            catch /^Vim\%((\a\+)\)\=:E553/
+                execute a:prefix . "last"
+            catch /^Vim\%((\a\+)\)\=:E\%(776\|42\):/
+            endtry
+        elseif a:direction == "down"
+            try
+                execute a:prefix . "next"
+            catch /^Vim\%((\a\+)\)\=:E553/
+                execute a:prefix . "first"
+            catch /^Vim\%((\a\+)\)\=:E\%(776\|42\):/
+            endtry
+        endif
+    endfunction
+
+
+    " <Home> and <End> go up and down the quickfix list and wrap around
+    nnoremap <silent> [q :call WrapCommand('up', 'c')<CR>
+    nnoremap <silent> ]q  :call WrapCommand('down', 'c')<CR>
+
+    " <C-Home> and <C-End> go up and down the location list and wrap around
+    nnoremap <silent> [l :call WrapCommand('up', 'l')<CR>
+    nnoremap <silent> ]l  :call WrapCommand('down', 'l')<CR>
 
 " }}}
