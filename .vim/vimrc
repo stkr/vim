@@ -572,4 +572,11 @@ endif
     nnoremap <silent> [l :call WrapCommand('up', 'l')<CR>
     nnoremap <silent> ]l  :call WrapCommand('down', 'l')<CR>
 
+    nnoremap <silent> [r :LspNextReference<CR>
+    nnoremap <silent> ]r :LspPreviousReference<CR>
+
+    nnoremap <C-i>r :LspReferences<CR>
+    nnoremap <C-i>d :LspDocumentDiagnostics<CR>
+    nnoremap <C-i>s :LspDocumentSymbol<CR>
+
 " }}}
