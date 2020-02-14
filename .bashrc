@@ -167,3 +167,6 @@ set -o vi
 #     xauth add $( xauth -f "$LOGIN_HOME/.Xauthority" list | tail -1 )
 # fi
 #
+
+# On MSYS, use native windows symlinks.
+export MSYS=winsymlinks:nativestrict
