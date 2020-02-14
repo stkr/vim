@@ -1,0 +1,582 @@
+language messages en_US.UTF-8
+
+" Use <,> as the leader key.
+let mapleader=","
+
+if has('win32') || has ('win64')
+	let g:vim_home = $HOME."/vimfiles/"
+    let g:vim_hostname = $COMPUTERNAME
+    set clipboard=unnamed
+else
+	let g:vim_home = $HOME."/.vim/"
+    let g:vim_hostname = $HOSTNAME
+    set clipboard=unnamedplus
+endif
+
+" General {{{
+    " Abbreviations
+    abbr funciton function
+    abbr teh the
+    abbr tempalte template
+    abbr fitler filter
+    abbr cosnt const
+    abbr attribtue attribute
+    abbr attribuet attribute
+
+    set autoread " detect when a file is changed
+    " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/149214
+    " Triger `autoread` when files changes on disk
+    " https://unix.stackexchange.com/questions/149209/refresh-changed-content-of-file-opened-in-vim/383044#383044
+    " https://vi.stackexchange.com/questions/13692/prevent-focusgained-autocmd-running-in-command-line-editing-mode
+    autocmd FocusGained,BufEnter,CursorHold,CursorHoldI * if mode() != 'c' | checktime | endif
+    " Notification after file change
+    " https://vi.stackexchange.com/questions/13091/autocmd-event-for-autoread
+    autocmd FileChangedShellPost *
+    \ echohl WarningMsg | echo "File changed on disk. Buffer reloaded." | echohl None
+
+    set history=1000 " change history to 1000
+    set textwidth=120
+    set viminfo^=%25
+
+    " Uncomment the following to have Vim jump to the last position when
+    " reopening a file
+    if has("autocmd")
+        au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+    endif
+
+    if (has('nvim'))
+        " show results of substition as they're happening
+        " but don't open a split
+        set inccommand=nosplit
+    endif
+
+    if has('mouse')
+        set mouse=a
+    endif
+
+    " Searching
+    set ignorecase " case insensitive searching
+    set smartcase " case-sensitive if expresson contains a capital letter
+    set hlsearch " highlight search results
+    set incsearch " set incremental search, like modern browsers
+    set nolazyredraw " don't redraw while executing macros
+
+    set magic " Set magic on, for regex
+
+    " error bells
+    set noerrorbells
+    set visualbell
+    set t_vb=
+    set tm=500
+
+    set enc=utf-8
+    set fileencoding=utf-8
+
+    " Set the text width to and create a vertical bar.
+    set textwidth=100
+    set colorcolumn=101
+    set fileencodings=ucs-bom,utf8,prc
+
+    set directory=$HOME/.vim-tmp/,$HOME/.tmp/,$HOME/tmp
+    set backupdir=$HOME/.vim-tmp/,$HOME/.tmp/,$HOME/tmp
+    set backup
+
+    " Keep undo history across sessions by storing it in a file
+    if has('persistent_undo')
+        let g:vim_undodir=expand("$HOME/.undodir/")
+        call mkdir(g:vim_undodir, 'p')
+        let &undodir = g:vim_undodir
+        set undofile
+    endif
+
+    set virtualedit=block
+
+" }}}
+
+
+" Appearance {{{
+    set number " show line numbers
+    set relativenumber
+    set nowrap " turn off line wrapping
+    set wrapmargin=8 " wrap lines when coming within n characters from side
+    set linebreak " set soft wrapping
+    set autoindent " automatically set indent of new line
+    set ttyfast " faster redrawing
+    set diffopt+=vertical
+    set laststatus=2 " show the satus line all the time
+    set scrolloff=2 " Set scroll offset so the active line stays towards the center.
+    set wildmenu " enhanced command line completion
+    set hidden " current buffer can be put into background
+    set showcmd " show incomplete commands
+    set noshowmode " don't show which mode disabled for PowerLine
+    set wildmode=list:longest " complete files like a shell
+    " set shell=$SHELL
+    set cmdheight=1 " command bar height
+    set title " set terminal title
+    set showmatch " show matching braces
+    set mat=2 " how many tenths of a second to blink
+    set laststatus=2 " Always show the status line
+
+    " Tab control
+    set expandtab " insert tabs rather than spaces for <Tab>
+    set smarttab " tab respects 'tabstop', 'shiftwidth', and 'softtabstop'
+    set tabstop=4 " the visible width of tabs
+    set softtabstop=4 " edit as if the tabs are 4 characters wide
+    set shiftwidth=4 " number of spaces to use for indent and unindent
+    set shiftround " round indent to a multiple of 'shiftwidth'
+
+    " Automatic formatting
+    set nojoinspaces " when joining lines, do not use two spaces after a sentence
+
+    " code folding settings
+    set foldmethod=syntax " fold based on indent
+    set foldlevelstart=99
+    set foldnestmax=10 " deepest fold is 10 levels
+    set nofoldenable " don't fold by default
+    set foldlevel=1
+
+    " toggle invisible characters
+    set list&
+
+    set ruler " Display a vertical ruler
+    " switch cursor to line when in insert mode, and block when not
+    set guicursor=n-v-c:block,i-ci-ve:ver25,r-cr:hor20,o:hor50
+    \,a:blinkwait700-blinkoff400-blinkon250-Cursor/lCursor
+    \,sm:block-blinkwait175-blinkoff150-blinkon175
+
+    " enable 24 bit color support if supported
+    if (has("termguicolors"))
+        if (!(has("nvim")))
+            let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+            let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+        endif
+        set termguicolors
+    endif
+
+    " highlight conflicts
+    match ErrorMsg '^\(<\|=\|>\)\{7\}\([^=].\+\)\?$'
+
+    " LightLine {{{
+        let g:lightline = {
+        \   'colorscheme': 'solarized',
+        \   'active': {
+        \       'left': [ [ 'mode', 'paste' ],
+        \               [ 'gitbranch' ],
+        \               [ 'readonly', 'filetype', 'filename' ]],
+        \       'right': [ [ 'percent' ], [ 'lineinfo' ],
+        \               [ 'fileformat', 'fileencoding' ]]
+        \   },
+        \   'component_type': {
+        \       'readonly': 'error',
+        \       'linter_warnings': 'warning',
+        \       'linter_errors': 'error'
+        \   },
+        \   'component_function': {
+        \       'fileencoding': 'LightlineFileEncoding',
+        \       'filename': 'LightlineFileName',
+        \       'fileformat': 'LightlineFileFormat',
+        \       'gitbranch': 'LightlineGitBranch'
+        \   },
+        \   'tabline': {
+        \       'left': [ [ 'tabs' ] ],
+        \       'right': [ [ 'close' ] ]
+        \   },
+        \   'tab': {
+        \       'active': [ 'filename', 'modified' ],
+        \       'inactive': [ 'filename', 'modified' ],
+        \   },
+        \   'separator': { 'left': '', 'right': '' },
+        \   'subseparator': { 'left': '', 'right': '' }
+        \ }
+        " \   'separator': { 'left': '¦¦¦', 'right': '¦¦¦' },
+        " \   'subseparator': { 'left': '¦', 'right': '¦' }
+
+        function! LightlineFileName() abort
+            let filename = winwidth(0) > 70 ? expand('%') : expand('%:t')
+            if filename =~ 'NERD_tree'
+                return ''
+            endif
+            let modified = &modified ? ' +' : ''
+            return fnamemodify(filename, ":~:.") . modified
+        endfunction
+
+        function! LightlineFileEncoding()
+            return winwidth(0) > 70 ? &fileencoding : ''
+        endfunction
+
+        function! LightlineFileFormat()
+            return winwidth(0) > 70 ? &fileformat : ''
+        endfunction
+
+        function! LightlineGitBranch()
+            return (exists('*fugitive#head') ? fugitive#head() : '')
+        endfunction
+
+    " }}}
+" }}}
+
+
+" General Mappings {{{
+    " set a map leader for more key combos
+    let mapleader = ','
+
+    " Marks should go to the column, not just the line. Why isn't this the default?
+    nnoremap ' `
+
+    "     "These are to cancel the default behavior of d, D, c, C
+    "     "  to put the text they delete in the default register.
+    "     "  Note that this means e.g. "ad won't copy the text into
+    "     "  register a anymore.  You have to explicitly yank it.
+    "     nnoremap d "_d
+    "     vnoremap d "_d
+    "     nnoremap D "_D
+    "     vnoremap D "_D
+    "     nnoremap c "_c
+    "     vnoremap c "_c
+    "     nnoremap C "_C
+    "     vnoremap C "_C
+    "     nnoremap p "_p
+    "     xnoremap P "_P
+    "     nnoremap p "_p
+    "     xnoremap P "_P
+
+    " copy to attached terminal using the yank(1) script:
+    " https://github.com/sunaku/home/blob/master/bin/yank
+    function! Yank(text) abort
+        let escape = system('yank', a:text)
+        if v:shell_error
+            echoerr escape
+        else
+            call writefile([escape], '/dev/tty', 'b')
+        endif
+    endfunction
+    noremap <silent> <Leader>y y:<C-U>call Yank(@0)<CR>
+
+    " Avoid the escape key http://vim.wikia.com/wiki/Avoid_the_escape_key
+    inoremap jk <Esc>
+    inoremap kj <Esc>
+
+    " shortcut to save
+    nmap <leader>, :w<cr>
+
+    " set paste toggle
+    set pastetoggle=<leader>v
+
+    " edit vimrc.vim
+    map <leader>ev :e! <C-R>=g:vim_home<CR>vimrc<CR>
+    " edit gitconfig
+    map <leader>eg :e! ~/.gitconfig<cr>
+
+    " clear highlighted search
+    " noremap <space> :set hlsearch! hlsearch?<cr>
+
+    " activate spell-checking alternatives
+    nmap ;s :set invspell spelllang=en<cr>
+
+    " remove extra whitespace
+    nmap <leader><space> :%s/\s\+$<cr>
+    nmap <leader><space><space> :%s/\n\{2,}/\r\r/g<cr>
+
+    inoremap <expr> <C-j> pumvisible() ? "\<C-N>" : "\<C-j>"
+    inoremap <expr> <C-k> pumvisible() ? "\<C-P>" : "\<C-k>"
+
+    "" from http://vim.wikia.com/wiki/Quickly_adding_and_deleting_empty_lines
+    nnoremap <silent><C-k> m`:silent -g/\m^\s*$/d<CR>``:noh<CR>
+    nnoremap <silent><C-j> :set paste<CR>m`O<Esc>``:set nopaste<CR>
+
+    nmap <leader>l :set list!<cr>
+    set listchars=eol:¬,tab:>·,trail:~,extends:>,precedes:<,space:␣
+
+    " Toggle highlighting of search results
+    :nnoremap <silent><expr> <Leader>s (&hls && v:hlsearch ? ':nohls' : ':set hls')."\n"
+
+    " Textmate style indentation
+    vmap <leader>[ <gv
+    vmap <leader>] >gv
+    nmap <leader>[ <<
+    nmap <leader>] >>
+
+    " switch between current and last buffer
+    nmap <leader>. <c-^>
+
+    " enable . command in visual mode
+    vnoremap . :normal .<cr>
+
+    " Navigation cursors in insert mode
+    inoremap <C-k> <Up>
+    inoremap <C-j> <Down>
+    inoremap <C-l> <Right>
+    inoremap <C-h> <Left>
+
+    " map <silent> <C-h> :call functions#WinMove('h')<cr>
+    " map <silent> <C-j> :call functions#WinMove('j')<cr>
+    " map <silent> <C-k> :call functions#WinMove('k')<cr>
+    " map <silent> <C-l> :call functions#WinMove('l')<cr>
+
+    nnoremap <silent> <leader>z :call functions#zoom()<cr>
+
+    vnoremap $( <esc>`>a)<esc>`<i(<esc>
+    vnoremap $[ <esc>`>a]<esc>`<i[<esc>
+    vnoremap ${ <esc>`>a}<esc>`<i{<esc>
+    vnoremap $" <esc>`>a"<esc>`<i"<esc>
+    vnoremap $' <esc>`>a'<esc>`<i'<esc>
+    vnoremap $\ <esc>`>o*/<esc>`<O/*<esc>
+    vnoremap $< <esc>`>a><esc>`<i<<esc>
+
+    " toggle cursor line
+    nnoremap <leader>i :set cursorline!<cr>
+
+    " scroll the viewport faster
+    nnoremap <C-e> 3<C-e>
+    nnoremap <C-y> 3<C-y>
+
+    autocmd! BufWinLeave * let b:winview = winsaveview()
+    autocmd! BufWinEnter * if exists('b:winview') | call winrestview(b:winview) | unlet b:winview
+
+    " Turn off linewise keys. Normally, the `j' and `k' keys move the cursor down one entire line. with
+    " line wrapping on, this can cause the cursor to actually skip a few lines on the screen because
+    " it's moving from line N to line N+1 in the file. I want this to act more visually -- I want `down'
+    " to mean the next line on the screen
+    " moving up and down work as you would expect
+    nnoremap <silent> j gj
+    nnoremap <silent> k gk
+    nnoremap <silent> ^ g^
+    nnoremap <silent> $ g$
+
+    " Use the space key to toggle folds
+    " nnoremap <space> za
+    " vnoremap <space> zf
+
+    " Super fast window movement shortcuts
+    " nmap <C-j> <C-W>j
+    " nmap <C-k> <C-W>k
+    " nmap <C-h> <C-W>h
+    " nmap <C-l> <C-W>l
+
+
+    " helpers for dealing with other people's code
+    nmap \t :set ts=4 sts=4 sw=4 noet<cr>
+    nmap \s :set ts=4 sts=4 sw=4 et<cr>
+
+
+    " FZF (replaces Ctrl-P, FuzzyFinder and Command-T)
+    " nmap ; :Buffers<CR>
+    nmap <Leader>t :Tags<CR>
+    nmap <Leader>f :Files<CR>
+    nmap <Leader>a :Rg!<CR>
+    nmap <Leader>b :Buffers<CR>
+    nmap <Leader>h :History<CR>
+    " nmap <Leader>c :Colors<CR>
+
+    nmap gqq :call FormatDocument()<CR>
+
+" }}}
+
+" General Functionality {{{
+
+    " Close buffers but keep splits
+    nnoremap <leader>q :Sayonara<cr>
+    nnoremap <leader>Q :Sayonara!<cr>
+
+    " Command line abbreviation so %% expands to the full path of
+    " the directory that contains the current file
+    cabbr <expr> %% expand('%:p:h')
+
+    " Start interactive EasyAlign in visual mode (e.g. vipga)
+    xmap ga <Plug>(EasyAlign)
+
+    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+    nmap ga <Plug>(EasyAlign)
+
+    " After block yank and paste, move cursor to the end of operated text 
+    " and don't override register
+    vnoremap y y`]
+    vnoremap <expr> p 'pgv"'.v:register.'y`]'
+    nnoremap p p`]
+
+    " Syntastic setting to always report errors in the location list.
+    let g:syntastic_always_populate_loc_list = 1
+    
+" }}}
+
+" Colorscheme and final setup {{{
+
+    set background=light
+    colorscheme solarized8_high
+
+    syntax on
+    filetype plugin indent on
+
+    " Highlight the active line and the active column.
+    set cursorline
+
+" }}}
+
+
+
+if has("gui_running")
+	" GUI is running or is about to start.
+	" Maximize gvim window (for an alternative on Windows, see simalt below).
+	set lines=37 columns=140
+    set guioptions-=e
+    set guioptions-=t
+    set guioptions-=T
+	if has("gui_gtk2") || has("gui_gtk3")
+        set guifont=Consolas\ 11,Inconsolata\ 11
+    elseif has("gui_photon")
+        set guifont=Consolas:s11
+    elseif has("gui_kde")
+        set guifont=Consolas/11/-1/5/50/0/0/0/1/0
+    elseif has("x11")
+        set guifont=-*-courier-medium-r-normal-*-*-180-*-*-m-*-*
+    else
+        set guifont=Consolas:h11:cDEFAULT
+  endif
+endif
+
+
+" Code completion {{{
+
+    if g:vim_hostname == 'NXL64850'
+        let g:clangd_executable='c:\Program Files\LLVM\bin\clangd.exe'
+    elseif g:vim_hostname == 'STEFAN-ASROCK'
+        let g:clangd_executable='g:\applications\LLVM\bin\clangd.exe'
+        let g:rls_executable='g:\applications\rust\rustup\toolchains\stable-x86_64-pc-windows-msvc\bin\rls.exe'
+        " Unfortunately the language server seems to be broken...
+        " let g:omnisharp_sample_server_executable='g:\applications\csharp-language-server-protocol\sample\SampleServer\bin\Release\netcoreapp2.0\win7-x64\SampleServer.exe'
+    endif
+
+    let g:asyncomplete_remove_duplicates = 1
+    let g:asyncomplete_auto_popup = 0
+    " let g:asyncomplete_log_file = expand('c:/tmp/asyncomplete.log')
+
+
+    let g:asyncomplete_buffer_clear_cache = 1
+
+    " Clangd Language Server Protocol via vim-lsp:
+    if exists('g:clangd_executable') && executable(g:clangd_executable)
+        au User lsp_setup call lsp#register_server({
+            \ 'name': 'clangd',
+            \ 'cmd': {server_info->[g:clangd_executable]},
+            \ 'whitelist': ['c', 'cpp', 'objc', 'objcpp'],
+            \ })
+    endif
+
+
+    if exists('g:rls_executable') && executable(g:rls_executable)
+        au user lsp_setup call lsp#register_server({
+            \ 'name': 'rls',
+            \ 'cmd': {server_info->['rustup', 'run', 'stable', 'rls']},
+            \ 'workspace_config': {'rust': {'clippy_preference': 'on'}},
+            \ 'whitelist': ['rust'],
+            \ })
+    endif
+
+    " Omnisharp Language Server Protocol via vim-lsp:
+    " g:omnisharp_sample_server_executablejj
+    " g:omnisharp_sample_server_executable
+    if exists("g:omnisharp_sample_server_executable") && executable(g:omnisharp_sample_server_executable)
+        au User lsp_setup call lsp#register_server({
+            \ 'name': 'omisharp',
+            \ 'cmd': {server_info->[g:omnisharp_sample_server_executable]},
+            \ 'whitelist': ['cs'],
+            \ })
+    endif
+
+
+    let g:lsp_diagnostics_enabled = 1
+
+    let g:lsp_highlights_enabled = 0
+    let g:lsp_textprop_enabled = 0
+
+    let g:lsp_highlight_references_enabled = 1
+
+    " let g:lsp_log_verbose = 1
+    " let g:lsp_log_file = expand('c:/tmp/vim-lsp.log')
+
+
+    au User asyncomplete_setup call asyncomplete#register_source(asyncomplete#sources#tags#get_source_options({
+        \ 'name': 'tags',
+        \ 'whitelist': ['c'],
+        \ 'completor': function('asyncomplete#sources#tags#completor'),
+        \ 'config': {
+        \    'max_file_size': 50000000,
+        \  },
+        \ }))
+
+
+
+    " Trigger code completion with tab:
+    function! s:check_back_space() abort
+        let col = col('.') - 1
+        return !col || getline('.')[col - 1]  =~ '\s'
+    endfunction
+    inoremap <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ asyncomplete#force_refresh()
+    inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+
+    inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+    inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
+    inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
+    inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
+    inoremap <expr> <PageDown> pumvisible() ? "\<PageDown>\<C-p>\<C-n>" : "\<PageDown>"
+    inoremap <expr> <PageUp>   pumvisible() ? "\<PageUp>\<C-p>\<C-n>" : "\<PageUp>"
+
+" }}}
+
+" {{{ Formatting of a document
+    
+    function! FormatDocument()
+        write
+        let filename = expand("%:p") 
+        if &filetype ==# 'rust'
+            let format_command = "rustfmt " . fnameescape(filename) 
+            let output = system(format_command)
+            edit
+        endif
+    endfunction
+" }}}
+
+
+
+" {{{ Location lists and quickfix
+"
+    " wrap :cnext/:cprevious and :lnext/:lprevious
+    function! WrapCommand(direction, prefix)
+        if a:direction == "up"
+            try
+                execute a:prefix . "previous"
+            catch /^Vim\%((\a\+)\)\=:E553/
+                execute a:prefix . "last"
+            catch /^Vim\%((\a\+)\)\=:E\%(776\|42\):/
+            endtry
+        elseif a:direction == "down"
+            try
+                execute a:prefix . "next"
+            catch /^Vim\%((\a\+)\)\=:E553/
+                execute a:prefix . "first"
+            catch /^Vim\%((\a\+)\)\=:E\%(776\|42\):/
+            endtry
+        endif
+    endfunction
+
+
+    " <Home> and <End> go up and down the quickfix list and wrap around
+    nnoremap <silent> [q :call WrapCommand('up', 'c')<CR>
+    nnoremap <silent> ]q  :call WrapCommand('down', 'c')<CR>
+
+    " <C-Home> and <C-End> go up and down the location list and wrap around
+    nnoremap <silent> [l :call WrapCommand('up', 'l')<CR>
+    nnoremap <silent> ]l  :call WrapCommand('down', 'l')<CR>
+
+    nnoremap <silent> [r :LspNextReference<CR>
+    nnoremap <silent> ]r :LspPreviousReference<CR>
+
+    nnoremap <C-i>r :LspReferences<CR>
+    nnoremap <C-i>d :LspDocumentDiagnostics<CR>
+    nnoremap <C-i>s :LspDocumentSymbol<CR>
+
+" }}}
