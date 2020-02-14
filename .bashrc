@@ -103,6 +103,9 @@ alias ll='ls -lA'
 alias la='ls -A'
 #alias l='ls -CF'
 
+# the dotfile alias for git:
+alias dotfiles='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+
 # Alias definitions.
 # You may want to put all your additions into a separate file like
 # ~/.bash_aliases, instead of adding them here directly.
