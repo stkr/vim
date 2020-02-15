@@ -518,7 +518,13 @@ endif
     inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
 
-    inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+    " The next binding makes a difference only when autocompletion is enabled. If the popup is shown
+    " and an entry is selected, per default ESC would close the popup but keep the selected entry
+    " inserted. With this binding, the selection is cancelled and no text is inserted. However, for
+    " some reason (yet to be understood) this is causing issues when using vim in MSYS. Therefore,
+    " we disable it for now, as it also seems not to be the most important feature.
+    " inoremap <expr> <Esc>      pumvisible() ? "\<C-e>" : "\<Esc>"
+    
     inoremap <expr> <CR>       pumvisible() ? "\<C-y>" : "\<CR>"
     inoremap <expr> <Down>     pumvisible() ? "\<C-n>" : "\<Down>"
     inoremap <expr> <Up>       pumvisible() ? "\<C-p>" : "\<Up>"
