@@ -9,9 +9,7 @@ repository.
 Sumarizing, to bootstrap:
 
 	git clone --bare https://github.com/stkr/dotfiles.git $HOME/.dotfiles
-	function dotfiles {
-	   /usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME $@
-	}
+	alias dotfiles="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 	dotfiles checkout
 	dotfiles config --local status.showUntrackedFiles no
 
