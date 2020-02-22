@@ -270,6 +270,11 @@ endif
     " clear highlighted search
     " noremap <space> :set hlsearch! hlsearch?<cr>
 
+    " Convert backslashes to forward slashes (windows->linux)
+    nnoremap <leader>ssl :s!\\!/!g<CR>
+    " Convert forward slashes to backslashes (linux->windows)
+    nnoremap <leader>ssw :s!/!\\!g<CR>
+
     " activate spell-checking alternatives
     nmap ;s :set invspell spelllang=en<cr>
 
