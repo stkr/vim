@@ -15,7 +15,7 @@ Sumarizing, to bootstrap:
 
 In case files are existing, move them out of the way and redo the checkout.
 
-# Exemplary ~/.dotfiles/config:
+## Exemplary ~/.dotfiles/config:
 
 [user]
     name = stkr
@@ -34,6 +34,20 @@ In case files are existing, move them out of the way and redo the checkout.
 	remote = origin
 	merge = refs/heads/master 
 
-[1]: https://www.atlassian.com/git/tutorials/dotfiles
 
+# Additional tools
+
+## Git credential manager for windows
+
+To enable git credential management, microsoft provides the Git Credential Manager for Windows at
+[2]:
+
+    To use the GCM along with git installed with pacman in an MSYS2 environment, simply download a
+    release zip and extract the contents directly into C:\msys64\usr\lib\git-core (assuming your
+    MSYS2 environment is installed in C:\msys64). Then run:
+
+    git config --global credential.helper manager 
+
+[1]: https://www.atlassian.com/git/tutorials/dotfiles
+[2]: https://github.com/microsoft/Git-Credential-Manager-for-Windows
 
