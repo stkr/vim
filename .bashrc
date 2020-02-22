@@ -67,7 +67,7 @@ if [ -f /usr/share/git/completion/git-prompt.sh ]; then
      . /usr/share/git/completion/git-prompt.sh
 fi
 
-source <(~/.bashrc.d/*)
+source <(cat ~/.bashrc.d/*.bash)
 
 if [ "$color_prompt" = yes ]; then
     PS1='${debian_chroot:+($debian_chroot)}\[\e]0;\w\a\]\n\[\e[32m\]\u@\h \[\e[33m\]\w\[\e[0m\]\[$(__git_ps1)\]'$'\n$ '
