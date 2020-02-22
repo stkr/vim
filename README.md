@@ -37,6 +37,21 @@ In case files are existing, move them out of the way and redo the checkout.
 
 # msys2 specific intallation notes
 
+## Starting an msys2 bash under conemu
+
+To get the shell started in a particular working directory, use the following commandline from
+extern:
+
+    c:\Program Files\ConEmu\ConEmu64.exe -Single -run {Bash::Msys2-64} -new_console:d:"DIRECTORY"
+
+E.g., to start one in the current working directory in Total Commander, create the following Start
+Menu entry:
+
+    Command:    c:\Program Files\ConEmu\ConEmu64.exe
+    Parameter:  -Single -run {Bash::Msys2-64} -new_console:d:"%P"
+
+
+
 ## Git credential manager for windows
 
 To enable git credential management, microsoft provides the Git Credential Manager for Windows at
@@ -59,7 +74,7 @@ necessary. In addition, the --height argument to fzf is not supported for window
 some script files that come with fzf to be changed for msys environment. It is not 100% the same
 experience as running if from linux, but coming rather close.
 
-
+## 
 
 
 [1]: https://www.atlassian.com/git/tutorials/dotfiles
