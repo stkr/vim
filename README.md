@@ -17,25 +17,25 @@ In case files are existing, move them out of the way and redo the checkout.
 
 ## Exemplary ~/.dotfiles/config:
 
-[user]
-    name = stkr
-    email = stkr@users.noreply.github.com 
-[core]
-	repositoryformatversion = 0
-	filemode = false
-	bare = true
-	ignorecase = true
-[remote "origin"]
-	url = https://github.com/stkr/dotfiles.git
-	fetch = +refs/heads/*:refs/remotes/origin/* 
-[status]
-	showUntrackedFiles = no
-[branch "master"]
-	remote = origin
-	merge = refs/heads/master 
+    [user]
+        name = stkr
+        email = stkr@users.noreply.github.com 
+    [core]
+        repositoryformatversion = 0
+        filemode = false
+        bare = true
+        ignorecase = true
+    [remote "origin"]
+        url = https://github.com/stkr/dotfiles.git
+        fetch = +refs/heads/*:refs/remotes/origin/* 
+    [status]
+        showUntrackedFiles = no
+    [branch "master"]
+        remote = origin
+        merge = refs/heads/master 
 
 
-# Additional tools
+# msys2 specific intallation notes
 
 ## Git credential manager for windows
 
@@ -47,6 +47,20 @@ To enable git credential management, microsoft provides the Git Credential Manag
     MSYS2 environment is installed in C:\msys64). Then run:
 
     git config --global credential.helper manager 
+
+
+## fzf 
+
+Fzf under windows does not work in case the TERM environment is set ([3]). Also, fzf seems to have
+issues with mintty. However, it is possible to run fzf in msys-bash with conemu. Still, it is
+necessary, that the TERM environment is unset. In order to achieve that, but without compromising
+other programs, a small wrapper script which does just unset TERM and calls fzf afterwards is
+necessary. In addition, the --height argument to fzf is not supported for windows. This requires
+some script files that come with fzf to be changed for msys environment. It is not 100% the same
+experience as running if from linux, but coming rather close.
+
+
+
 
 [1]: https://www.atlassian.com/git/tutorials/dotfiles
 [2]: https://github.com/microsoft/Git-Credential-Manager-for-Windows
