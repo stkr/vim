@@ -15,4 +15,25 @@ Sumarizing, to bootstrap:
 
 In case files are existing, move them out of the way and redo the checkout.
 
+# Exemplary ~/.dotfiles/config:
+
+[user]
+    name = stkr
+    email = stkr@users.noreply.github.com 
+[core]
+	repositoryformatversion = 0
+	filemode = false
+	bare = true
+	ignorecase = true
+[remote "origin"]
+	url = https://github.com/stkr/dotfiles.git
+	fetch = +refs/heads/*:refs/remotes/origin/* 
+[status]
+	showUntrackedFiles = no
+[branch "master"]
+	remote = origin
+	merge = refs/heads/master 
+
 [1]: https://www.atlassian.com/git/tutorials/dotfiles
+
+
