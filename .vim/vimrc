@@ -83,8 +83,10 @@ endif
 
     " Keep undo history across sessions by storing it in a file
     if has('persistent_undo')
-        let g:vim_undodir=expand("$HOME/.undodir/")
-        call mkdir(g:vim_undodir, 'p')
+        let g:vim_undodir=expand("$HOME/.undodir")
+        if ! isdirectory(g:vim_undodir)
+            call mkdir(g:vim_undodir, 'p')
+        endif
         let &undodir = g:vim_undodir
         set undofile
     endif
