@@ -37,7 +37,8 @@ In case files are existing, move them out of the way and redo the checkout.
 
 # msys2 specific intallation notes
 
-## Starting an msys2 bash under conemu
+
+## Starting an msys2 bash under ConEmu
 
 To get the shell started in a particular working directory, use the following commandline from
 extern:
@@ -49,6 +50,32 @@ Menu entry:
 
     Command:    c:\Program Files\ConEmu\ConEmu64.exe
     Parameter:  -Single -run {Bash::Msys2-64} -new_console:d:"%P"
+
+
+## Color mapping between ConEmu and ANSI
+
+The mapping between ConEmu and the ANSI escape codes for colors is not 100% straightforward. The
+following table contains the mapping:
+
+| ConEmu | Name           | ANSI FG | ANSI BG  |
+| ------ | -------------- | ------- | -------- |
+| 0.     | Black          | 30      |  40      |
+| 4/1.   | Red            | 31      |  41      |
+| 2.     | Green          | 32      |  42      |
+| 6/3.   | Yellow         | 33      |  43      |
+| 1/4.   | Blue           | 34      |  44      |
+| 5.     | Magenta        | 35      |  45      |
+| 3/6.   | Cyan           | 36      |  46      |
+| 7.     | White          | 37      |  47      |
+| 8.     | Bright Black   | 90      | 100      |
+| 12.    | Bright Red     | 91      | 101      |
+| 10.    | Bright Green   | 92      | 102      |
+| 14.    | Bright Yellow  | 93      | 103      |
+| 9.     | Bright Blue    | 94      | 104      |
+| 13.    | Bright Magenta | 95      | 105      |
+| 11.    | Bright Cyan    | 96      | 106      |
+| 15.    | Bright White   | 97      | 107      |
+
 
 
 
