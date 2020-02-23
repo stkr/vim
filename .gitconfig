@@ -8,7 +8,7 @@
 	path = c:/Program Files/Beyond Compare 4/bcomp.exe
 [alias]
     co = checkout
-    st = status
+    st = status --short
     cm = commit
     logs = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate
     logl = log --pretty=format:"%C(yellow)%h%Cred%d\\ %Creset%s%Cblue\\ [%cn]" --decorate --numstat
