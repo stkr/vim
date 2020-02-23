@@ -60,11 +60,11 @@ if [ -f /usr/share/git/completion/git-completion.bash ]; then
      . /usr/share/git/completion/git-completion.bash
 fi
 
-if [ -f /usr/share/git/completion/git-prompt.sh ]; then
+if [ -f ~/.git-prompt.sh ]; then
      GIT_PS1_SHOWDIRTYSTATE=1
      GIT_PS1_SHOWSTASHSTATE=1
      GIT_PS1_SHOWUNTRACKEDFILES=1
-     . /usr/share/git/completion/git-prompt.sh
+     . ~/.git-prompt.sh
 fi
 
 source <(cat ~/.bashrc.d/*.bash)
