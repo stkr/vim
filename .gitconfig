@@ -43,3 +43,5 @@
 [diff]
 	tool = gvim
 
+[core]
+	editor = HOME=C:/Users/nxp29037 gvim
