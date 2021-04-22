@@ -18,6 +18,7 @@ endif
 "     plugins being loaded. However, the logic is a bit backwards. If the particular variable does
 "     NOT exist, the plugin will be loaded. Keep that in mind on conditional loading...
 "
+let g:loaded_vim_which_key = 0
 " }}}
 
 
